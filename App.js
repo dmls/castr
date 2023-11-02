@@ -1,34 +1,31 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import HomeScreen from './Screens/HomeScreen';
+import { styles } from './assets/styles/Styles';
+
+import CollectionsScreen from './Screens/CollectionsScreen';
 import SplashScreen from './Screens/SplashScreen';
+import CreateCollectionScreen from './Screens/CreateCollectionScreen';
 
 const Stack = createNativeStackNavigator();
 
+const navTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#fff',
+  },
+};
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
+    <NavigationContainer theme={navTheme}>
+      <Stack.Navigator initialRouteName="Collections">
+        <Stack.Screen name="Collections" component={CollectionsScreen} />
         <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="CreateCollection" component={CreateCollectionScreen} />
       </Stack.Navigator>
-      {/* <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View> */}
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
