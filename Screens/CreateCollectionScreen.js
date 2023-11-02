@@ -32,10 +32,10 @@ const CreateCollectionScreen = ({ navigation }) => {
           alignContent: 'center',
         }}>
         <KeyboardAvoidingView enabled>
-          <View style={styles.section}>
-            <Text style={styles.inputLabel}>Collection name</Text>
+          <View style={[styles.section, styles.mb5]}>
+            <Text>Collection name</Text>
           </View>
-          <View style={styles.section}>
+          <View style={[styles.section, styles.mt0]}>
             <TextInput
               style={styles.input}
               onChangeText={onChangeField('name')}

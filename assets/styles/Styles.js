@@ -70,4 +70,12 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
   },
+
+  // Utils
+  mt0: {
+    marginTop: 0
+  },
+  mb5: {
+    marginBottom: 5 
+  }
 });
