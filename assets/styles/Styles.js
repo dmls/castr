@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { utils } from './Utils';
 
 export var colors = {
   white: '#fff',
@@ -17,7 +18,10 @@ export const styles = StyleSheet.create({
     color: colors.gray_dark,
   },
   section: {
+    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
     marginTop: 20,
     marginLeft: 35,
     marginRight: 35,
@@ -28,15 +32,14 @@ export const styles = StyleSheet.create({
     height: 80,
   },
   button: {
+    flex: 1,
     backgroundColor: colors.primary,
     borderWidth: 0,
     borderColor: colors.primary,
     height: 40,
     alignItems: 'center',
     borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
+    marginTop: 25,
     marginBottom: 25,
   },
   buttonText: {
@@ -49,11 +52,15 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    height: 35,
     borderWidth: 1,
     borderRadius: 30,
     borderColor: colors.primary,
+  },
+  inputError: {
+    borderColor: colors.red,
   },
   inputPass: {
     flex: 1,
@@ -65,17 +72,14 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
   },
+  sectionErrorText: {
+    justifyContent: 'center',
+  },
   errorText: {
     color: colors.red,
     textAlign: 'center',
     fontSize: 14,
   },
 
-  // Utils
-  mt0: {
-    marginTop: 0
-  },
-  mb5: {
-    marginBottom: 5 
-  }
+  ...utils,
 });

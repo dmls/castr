@@ -1,29 +1,55 @@
-import React, { useCallback, useEffect } from 'react';
-import { View, Text, Button, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Logs } from 'expo';
 
-import { styles } from '../assets/styles/Styles.js';
-// import { KeyboardAvoidingView } from 'react-native-web';
+import { styles } from '../assets/styles/Styles';
+import Loader from '../Components/Loader';
+
+Logs.enableExpoCliLogging()
 
 const CreateCollectionScreen = ({ navigation }) => {
-  const { register, handleSubmit, setValue } = useForm();
-  const onSubmit = useCallback(formData => {
-    console.log(formData);
-  }, []);
+  const [loading, setLoading] = useState(false);
 
-  const onChangeField = useCallback(
-    name => val => {
-      setValue(name, val);
+  const validationSchema = yup.object().shape({
+    name: yup.string()
+      .max(50, 'Name must be at most fifty characters long.')
+      .required('Please enter a name for the new collection.'),
+  });
+
+  const saveToStorage = async (values) => {
+    try {
+      const collectionsString = await AsyncStorage.getItem('collections');
+      const collectionsArray = collectionsString ? JSON.parse(collectionsString) : [];
+
+      collectionsArray.push({ created: Date.now(), name: values.name });
+
+      await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
+    } catch (error) {
+      console.error('Error saving name to AsyncStorage:', error);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
     },
-    []
-  );
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      setLoading(true);
+      await saveToStorage(values);
+      setLoading(false);
+    },
+  });
 
-   useEffect(() => {
-     register('name');
-   }, [register]);
+  const { handleChange, handleSubmit, values, errors, touched } = formik;
 
   return (
     <View style={styles.container}>
+      <Loader loading={loading} />
+
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -38,8 +64,25 @@ const CreateCollectionScreen = ({ navigation }) => {
           <View style={[styles.section, styles.mt0]}>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeField('name')}
+              onChangeText={handleChange('name')}
+              value={values.name}
             />
+          </View>
+
+            {touched.name && errors.name && (
+              <View style={styles.section}>
+                <Text style={styles.errorText}>{errors.name}</Text>
+              </View>
+            )}
+
+          <View style={styles.section}>
+            <TouchableOpacity
+                style={styles.button}
+                activeOpacity={0.5}
+                onPress={handleSubmit}
+              >
+              <Text style={styles.buttonText}>Create</Text>
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
