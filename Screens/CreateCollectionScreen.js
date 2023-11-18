@@ -13,12 +13,6 @@ Logs.enableExpoCliLogging()
 const CreateCollectionScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
-  const validationSchema = yup.object().shape({
-    name: yup.string()
-      .max(50, 'Name must be at most fifty characters long.')
-      .required('Please enter a name for the new collection.'),
-  });
-
   const saveToStorage = async (values) => {
     try {
       const collectionsString = await AsyncStorage.getItem('collections');
@@ -31,6 +25,12 @@ const CreateCollectionScreen = ({ navigation }) => {
       console.error('Error saving name to AsyncStorage:', error);
     }
   };
+
+  const validationSchema = yup.object().shape({
+    name: yup.string()
+      .max(50, 'Name must be at most fifty characters long.')
+      .required('Please enter a name for the new collection.'),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -58,12 +58,12 @@ const CreateCollectionScreen = ({ navigation }) => {
           alignContent: 'center',
         }}>
         <KeyboardAvoidingView enabled>
-          <View style={[styles.section, styles.mb5]}>
+          <View style={styles.section}>
             <Text>Collection name</Text>
           </View>
-          <View style={[styles.section, styles.mt0]}>
+          <View style={styles.section}>
             <TextInput
-              style={styles.input}
+              style={[styles.input, (errors.name && styles.inputError)]}
               onChangeText={handleChange('name')}
               value={values.name}
             />

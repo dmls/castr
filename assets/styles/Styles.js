@@ -18,14 +18,11 @@ export const styles = StyleSheet.create({
     color: colors.gray_dark,
   },
   section: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
-    marginTop: 20,
-    marginLeft: 35,
-    marginRight: 35,
-    margin: 10,
+    marginVertical: 10,
+    marginHorizontal: 35
   },
   activityIndicator: {
     alignItems: 'center',
