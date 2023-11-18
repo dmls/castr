@@ -36,8 +36,6 @@ export const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     borderRadius: 30,
-    marginTop: 25,
-    marginBottom: 25,
   },
   buttonText: {
     paddingVertical: 10,
