@@ -43,6 +43,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.white,
   },
+  inputLabel: {
+    marginLeft: 15,
+    fontSize: 18,
+  },
   input: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -72,7 +76,7 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     color: colors.red,
-    textAlign: 'center',
+    marginLeft: 15,
     fontSize: 14,
   },
 

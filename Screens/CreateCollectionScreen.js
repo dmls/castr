@@ -58,8 +58,8 @@ const CreateCollectionScreen = ({ navigation }) => {
           alignContent: 'center',
         }}>
         <KeyboardAvoidingView enabled>
-          <View style={styles.section}>
-            <Text>Collection name</Text>
+          <View style={[styles.section, styles.jcFlexStart]}>
+            <Text style={styles.inputLabel}>Collection name</Text>
           </View>
           <View style={styles.section}>
             <TextInput
@@ -70,7 +70,7 @@ const CreateCollectionScreen = ({ navigation }) => {
           </View>
 
             {touched.name && errors.name && (
-              <View style={styles.section}>
+              <View style={[styles.section, styles.jcFlexStart]}>
                 <Text style={styles.errorText}>{errors.name}</Text>
               </View>
             )}

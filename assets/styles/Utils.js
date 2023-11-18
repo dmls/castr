@@ -7,6 +7,9 @@ export const utils = StyleSheet.create({
   jcCenter: {
     justifyContent: 'center',
   },
+  jcFlexStart: {
+    justifyContent: 'flex-start',
+  },
 
   // Margin
   mt0: {
