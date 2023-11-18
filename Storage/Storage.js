@@ -11,8 +11,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
  */
 const getCollections = async () => {
   try {
-    const collectionsString = await AsyncStorage.getItem('collections');
-    return collectionsString ? JSON.parse(collectionsString) : [];
+    const resultString = await AsyncStorage.getItem('collections');
+    return resultString ? JSON.parse(resultString) : [];
+
   } catch (error) {
     console.error('Error loading collections from AsyncStorage:', error);
     return false;
