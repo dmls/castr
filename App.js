@@ -3,6 +3,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import CollectionsScreen from './Screens/CollectionsScreen';
+import CollectionViewScreen from './Screens/CollectionView';
 import SplashScreen from './Screens/SplashScreen';
 import CreateCollectionScreen from './Screens/CreateCollectionScreen';
 
@@ -21,6 +22,7 @@ export default function App() {
     <NavigationContainer theme={navTheme}>
       <Stack.Navigator initialRouteName="Collections">
         <Stack.Screen name="Collections" component={CollectionsScreen} />
+        <Stack.Screen name="CollectionView" component={CollectionViewScreen} />
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="CreateCollection" component={CreateCollectionScreen} />
       </Stack.Navigator>

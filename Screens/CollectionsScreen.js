@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Touchable } from 'react-native';
 import { styles } from '../assets/styles/Styles';
 import { getCollections } from '../Storage/Storage';
 
@@ -22,6 +22,17 @@ const CollectionsScreen = ({ navigation }) => {
           <Text>{JSON.stringify(collections)}</Text>
         </View>
       </View>
+
+      {collections.map((c, index) => {
+        return (
+          <TouchableOpacity key={index} style={styles.section} onPress={() => navigation.navigate('CollectionView')}>
+            <View style={styles.sectionRow}>
+              <Text>{c.name}</Text>
+            </View>
+          </TouchableOpacity>
+        )
+      })}
+
       <View style={styles.sectionRow}>
         <TouchableOpacity
           style={styles.button}
