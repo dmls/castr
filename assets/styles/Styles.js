@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { splash } from "./Splash";
 import { utils } from './Utils';
 
 export var colors = {
@@ -94,4 +95,5 @@ export const styles = StyleSheet.create({
   },
 
   ...utils,
+  ...splash
 });

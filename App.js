@@ -20,10 +20,10 @@ const navTheme = {
 export default function App() {
   return (
     <NavigationContainer theme={navTheme}>
-      <Stack.Navigator initialRouteName="Collections">
+      <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen name="Collections" component={CollectionsScreen} />
         <Stack.Screen name="CollectionView" component={CollectionViewScreen} />
-        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CreateCollection" component={CreateCollectionScreen} />
       </Stack.Navigator>
     </NavigationContainer>
