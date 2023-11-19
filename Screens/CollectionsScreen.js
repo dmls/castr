@@ -18,15 +18,16 @@ const CollectionsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.section}>
-        <Text>{JSON.stringify(collections)}</Text>
+        <View style={styles.sectionRow}>
+          <Text>{JSON.stringify(collections)}</Text>
+        </View>
       </View>
-
-      <View style={styles.section}>
+      <View style={styles.sectionRow}>
         <TouchableOpacity
-            style={styles.button}
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate('CreateCollection')}
-          >
+          style={styles.button}
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate('CreateCollection')}
+        >
           <Text style={styles.buttonText}>Create a collection</Text>
         </TouchableOpacity>
       </View>

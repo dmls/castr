@@ -50,39 +50,36 @@ const CreateCollectionScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Loader loading={loading} />
 
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <KeyboardAvoidingView enabled>
-          <View style={[styles.section, styles.jcFlexStart]}>
-            <Text style={styles.inputLabel}>Collection name</Text>
-          </View>
-          <View style={styles.section}>
-            <TextInput
-              style={[styles.input, (errors.name && styles.inputError)]}
-              onChangeText={handleChange('name')}
-              value={values.name}
-            />
-          </View>
-
-            {touched.name && errors.name && (
-              <View style={[styles.section, styles.jcFlexStart]}>
-                <Text style={styles.errorText}>{errors.name}</Text>
-              </View>
-            )}
 
           <View style={styles.section}>
-            <TouchableOpacity
-                style={styles.button}
-                activeOpacity={0.5}
-                onPress={handleSubmit}
-              >
-              <Text style={styles.buttonText}>Create</Text>
-            </TouchableOpacity>
+            <View style={[styles.sectionRow, styles.jcFlexStart]}>
+              <Text style={styles.inputLabel}>Collection name</Text>
+            </View>
+            <View style={styles.sectionRow}>
+              <TextInput
+                style={[styles.input, (errors.name && styles.inputError)]}
+                onChangeText={handleChange('name')}
+                value={values.name}
+              />
+            </View>
+
+              {touched.name && errors.name && (
+                <View style={[styles.sectionRow, styles.jcFlexStart]}>
+                  <Text style={styles.errorText}>{errors.name}</Text>
+                </View>
+              )}
+
+            <View style={styles.sectionRow}>
+              <TouchableOpacity
+                  style={styles.button}
+                  activeOpacity={0.5}
+                  onPress={handleSubmit}
+                >
+                <Text style={styles.buttonText}>Create</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </ScrollView>

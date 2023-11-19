@@ -4,6 +4,7 @@ import { utils } from './Utils';
 export var colors = {
   white: '#fff',
   black: '#000',
+  gray: '#9AA0A6',
   gray_dark: '#3C4043',
   primary: '#4285F4',
   red: '#EA4335',
@@ -12,17 +13,23 @@ export var colors = {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.gray,
     color: colors.gray_dark,
   },
   section: {
+    flexDirection: 'column',
+    alignContent: 'center',
+    margin: 4,
+    backgroundColor: colors.white,
+  },
+  sectionRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
     marginVertical: 10,
-    marginHorizontal: 35
+    marginHorizontal: 4,
+    paddingHorizontal: 10,
   },
   activityIndicator: {
     alignItems: 'center',
