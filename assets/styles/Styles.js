@@ -2,26 +2,29 @@ import { StyleSheet } from "react-native";
 import { utils } from './Utils';
 
 export var colors = {
-  white: '#fff',
-  black: '#000',
-  gray: '#9AA0A6',
-  gray_dark: '#3C4043',
-  primary: '#4285F4',
-  red: '#EA4335',
+  primary: '#0d6efd',
+  secondary: '#adb5bd',
+  success: '#198754',
+  info: '#0dcaf0',
+  warning: '#ffc107',
+  danger: '#dc3545',
+  section: '#fff',
+  sectionText: '#202529',
+  background: '#f8f9fa',
 };
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignContent: 'center',
-    backgroundColor: colors.gray,
-    color: colors.gray_dark,
+    backgroundColor: colors.background,
+    color: colors.sectionText,
   },
   section: {
     flexDirection: 'column',
     alignContent: 'center',
     margin: 4,
-    backgroundColor: colors.white,
+    backgroundColor: colors.section,
   },
   sectionRow: {
     flexDirection: 'row',
@@ -30,6 +33,9 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 4,
     paddingHorizontal: 10,
+  },
+  sectionText: {
+    color: colors.sectionText,
   },
   activityIndicator: {
     alignItems: 'center',
@@ -48,7 +54,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     fontSize: 16,
-    color: colors.white,
+    color: colors.section,
   },
   inputLabel: {
     marginLeft: 15,
@@ -66,7 +72,7 @@ export const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   inputError: {
-    borderColor: colors.red,
+    borderColor: colors.danger,
   },
   inputPass: {
     flex: 1,
@@ -82,7 +88,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   errorText: {
-    color: colors.red,
+    color: colors.danger,
     marginLeft: 15,
     fontSize: 14,
   },

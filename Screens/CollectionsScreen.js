@@ -27,7 +27,7 @@ const CollectionsScreen = ({ navigation }) => {
         return (
           <TouchableOpacity key={index} style={styles.section} onPress={() => navigation.navigate('CollectionView')}>
             <View style={styles.sectionRow}>
-              <Text>{c.name}</Text>
+              <Text style={styles.sectionText}>{c.name}</Text>
             </View>
           </TouchableOpacity>
         )
