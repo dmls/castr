@@ -25,7 +25,7 @@ const CollectionsScreen = ({ navigation }) => {
 
       {collections.map((c, index) => {
         return (
-          <TouchableOpacity key={index} style={styles.section} onPress={() => navigation.navigate('CollectionView')}>
+          <TouchableOpacity key={index} style={styles.section} onPress={() => navigation.navigate('CollectionView', {collection: c.name})}>
             <View style={styles.sectionRow}>
               <Text style={styles.sectionText}>{c.name}</Text>
             </View>
