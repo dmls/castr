@@ -3,7 +3,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import CollectionsScreen from './Screens/CollectionsScreen';
-import CollectionViewScreen from './Screens/CollectionView';
+import CollectionViewScreen from './Screens/CollectionViewScreen';
 import SplashScreen from './Screens/SplashScreen';
 import CreateCollectionScreen from './Screens/CreateCollectionScreen';
 

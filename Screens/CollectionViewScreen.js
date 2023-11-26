@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Touchable } from 'react-native';
+import React from 'react';
+import { View, Text } from 'react-native';
 import { styles } from '../assets/styles/Styles';
-import { getCollections } from '../Storage/Storage';
 
-const CollectionViewScreen = ({ navigation }) => {
-  const {collection} = navigation.params;
+const CollectionViewScreen = ({ route }) => {
+  const {collection} = route.params;
 
   return (
     <View style={styles.container}>
