@@ -18,17 +18,17 @@ const getCollections = async () => {
 
 /**
  * Delete collections with the specified names.
- * @param array {string[]} names - An array of strings representing the names of collections to delete.
+ * @param array {int[]} ids - An array of ids of collections to delete.
  * @returns boolean {boolean} - Returns true on success, false on error.
  */
-const deleteCollections = async (names) => {
+const deleteCollections = async (ids) => {
   try {
     const resultString = await AsyncStorage.getItem('collections');
     let resultArray = JSON.parse(resultString || '[]');
 
-    names.forEach((name) => {
-      const indexToDelete = resultArray.findIndex((item) => item.name === name);
-
+    ids.forEach((id) => {
+      const indexToDelete = resultArray.findIndex((item) => item.id === id);
+      
       if (indexToDelete !== -1) {
         resultArray.splice(indexToDelete, 1);
       }

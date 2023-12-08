@@ -11,7 +11,7 @@ const DeleteCollectionButton = ({ collection, navigation }) => {
       [
         { text: 'Cancel' },
         { text: 'Delete', onPress: async () => {
-          const del = await deleteCollections([collection.name]);
+          const del = await deleteCollections([collection.id]);
           navigation.push('Collections');
         } },
       ]
