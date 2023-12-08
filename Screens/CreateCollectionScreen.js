@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image, ScrollView, KeyboardAvoidingView } from 'react-native';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Logs } from 'expo';
 
@@ -12,13 +13,14 @@ Logs.enableExpoCliLogging()
 
 const CreateCollectionScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState(null);
 
   const saveToStorage = async (values) => {
     try {
       const collectionsString = await AsyncStorage.getItem('collections');
       const collectionsArray = collectionsString ? JSON.parse(collectionsString) : [];
 
-      collectionsArray.push({ created: Date.now(), name: values.name });
+      collectionsArray.push({ created: Date.now(), name: values.name, image: image });
 
       await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
     } catch (error) {
@@ -28,8 +30,8 @@ const CreateCollectionScreen = ({ navigation }) => {
 
   const validationSchema = yup.object().shape({
     name: yup.string()
-      .max(50, 'Name must be at most fifty characters long.')
-      .required('Please enter a name for the new collection.'),
+    .max(50, 'Name must be at most fifty characters long.')
+    .required('Please enter a name for the new collection.'),
   });
 
   const formik = useFormik({
@@ -43,6 +45,20 @@ const CreateCollectionScreen = ({ navigation }) => {
       setLoading(false);
     },
   });
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const { handleChange, handleSubmit, values, errors, touched } = formik;
 
@@ -65,18 +81,34 @@ const CreateCollectionScreen = ({ navigation }) => {
               />
             </View>
 
-              {touched.name && errors.name && (
-                <View style={[styles.sectionRow, styles.jcFlexStart]}>
-                  <Text style={styles.errorText}>{errors.name}</Text>
-                </View>
-              )}
+            {touched.name && errors.name && (
+              <View style={[styles.sectionRow, styles.jcFlexStart]}>
+                <Text style={styles.errorText}>{errors.name}</Text>
+              </View>
+            )}
 
             <View style={styles.sectionRow}>
               <TouchableOpacity
-                  style={styles.button}
-                  activeOpacity={0.5}
-                  onPress={handleSubmit}
-                >
+                style={styles.button}
+                activeOpacity={0.5}
+                onPress={pickImage}
+              >
+                <Text style={styles.buttonText}>Select image</Text>
+              </TouchableOpacity>
+            </View>
+
+            {image &&
+            <View style={styles.sectionRow}>
+              <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+            </View>
+            }
+
+            <View style={styles.sectionRow}>
+              <TouchableOpacity
+                style={styles.button}
+                activeOpacity={0.5}
+                onPress={handleSubmit}
+              >
                 <Text style={styles.buttonText}>Create</Text>
               </TouchableOpacity>
             </View>
