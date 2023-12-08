@@ -20,9 +20,22 @@ const CreateCollectionScreen = ({ navigation }) => {
       const collectionsString = await AsyncStorage.getItem('collections');
       const collectionsArray = collectionsString ? JSON.parse(collectionsString) : [];
 
-      collectionsArray.push({ created: Date.now(), name: values.name, image: image });
+      const lastId = parseInt(collectionsArray[collectionsArray.length - 1]?.id);
+      const nextId = lastId ? lastId + 1 : 1;
+
+      const optionalAtts = [
+        { key: 'image', value: image },
+      ];
+     
+      collectionsArray.push({ 
+        id: nextId, 
+        created: Date.now(), 
+        name: values.name, 
+        ...optionalAtts.reduce((acc, { key, value }) => (value != null ? { ...acc, [key]: value } : acc), {}),
+      }); 
 
       await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
+      navigation.push('Collections');
     } catch (error) {
       console.error('Error saving name to AsyncStorage:', error);
     }
