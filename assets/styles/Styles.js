@@ -51,6 +51,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 30,
   },
+  buttonDanger: {
+    backgroundColor: colors.danger, 
+  },
   buttonText: {
     paddingVertical: 10,
     paddingHorizontal: 20,

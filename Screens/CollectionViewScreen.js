@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { styles } from '../assets/styles/Styles';
+import DeleteCollectionButton from '../Components/DeleteCollectionButton';
 
-const CollectionViewScreen = ({ route }) => {
+const CollectionViewScreen = ({ navigation, route }) => {
   const {collection} = route.params;
 
   return (
@@ -17,6 +18,10 @@ const CollectionViewScreen = ({ route }) => {
             <Image source={{ uri: collection.image }} style={{ width: 200, height: 200 }} />
           </View>
         )}
+
+        <View style={styles.sectionRow}>
+          <DeleteCollectionButton collection={collection} navigation={navigation} />
+        </View>
       </View>
     </View>
   );
