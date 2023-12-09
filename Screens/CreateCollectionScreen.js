@@ -62,9 +62,7 @@ const CreateCollectionScreen = ({ navigation }) => {
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
+      mediaType: 'photo',
       quality: 1,
     });
 
@@ -112,7 +110,7 @@ const CreateCollectionScreen = ({ navigation }) => {
 
             {image &&
             <View style={styles.sectionRow}>
-              <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+              <Image source={{ uri: image }} style={styles.imageFullWidth} />
             </View>
             }
 

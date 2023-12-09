@@ -20,5 +20,10 @@ export const utils = StyleSheet.create({
   },
   mb15: {
     marginBottom: 15,
+  },
+
+  imageFullWidth: {
+    flex: 1, 
+    aspectRatio: 4/3
   }
 });

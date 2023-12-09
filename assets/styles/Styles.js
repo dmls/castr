@@ -15,6 +15,9 @@ export var colors = {
 };
 
 export const styles = StyleSheet.create({
+  h1: {
+    fontSize: 24
+  },
   container: {
     flex: 1,
     alignContent: 'center',
@@ -34,6 +37,9 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 4,
     paddingHorizontal: 10,
+  },
+  sectionRowNoMargin: {
+    marginHorizontal: -10
   },
   sectionText: {
     color: colors.sectionText,

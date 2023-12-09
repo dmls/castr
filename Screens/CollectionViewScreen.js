@@ -10,12 +10,12 @@ const CollectionViewScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={styles.section}>
         <View style={styles.sectionRow}>
-          <Text style={styles.foo}>{collection.name}</Text>
+          <Text style={styles.h1}>{collection.name}</Text>
         </View>
 
         {collection.image && (
-          <View style={styles.sectionRow}>
-            <Image source={{ uri: collection.image }} style={{ width: 200, height: 200 }} />
+          <View style={[styles.sectionRow, styles.sectionRowNoMargin]}>
+            <Image source={{ uri: collection.image }} style={styles.imageFullWidth} />
           </View>
         )}
 
