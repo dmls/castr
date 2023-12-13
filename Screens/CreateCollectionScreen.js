@@ -8,12 +8,15 @@ import { Logs } from 'expo';
 
 import { styles } from '../assets/styles/Styles';
 import { createCollection, updateCollection } from '../Storage/Storage';
+import navTitleCustom from '../Utils/Navigation';
 import Loader from '../Components/Loader';
 
 Logs.enableExpoCliLogging()
 
 const CreateCollectionScreen = ({ navigation, route }) => {
   const { collection } = route?.params ?? {};
+
+  navTitleCustom(navigation, (collection ? 'Edit collection' : 'Create collection'));
 
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(collection?.image || null);

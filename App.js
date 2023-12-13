@@ -22,7 +22,7 @@ export default function App() {
     <NavigationContainer theme={navTheme}>
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen name="Collections" component={CollectionsScreen} />
-        <Stack.Screen name="CollectionView" component={CollectionViewScreen} />
+        <Stack.Screen name="CollectionView" component={CollectionViewScreen} options={{ title: '' }}/>
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CreateCollection" component={CreateCollectionScreen} />
       </Stack.Navigator>
