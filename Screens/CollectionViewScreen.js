@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../assets/styles/Styles';
 import DeleteCollectionButton from '../Components/DeleteCollectionButton';
 
@@ -18,6 +18,17 @@ const CollectionViewScreen = ({ navigation, route }) => {
             <Image source={{ uri: collection.image }} style={styles.imageFullWidth} />
           </View>
         )}
+
+        <View style={styles.sectionRow}>
+          <TouchableOpacity
+            style={styles.button}
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate('CreateCollection', {collection: collection})}
+          >
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+
 
         <View style={styles.sectionRow}>
           <DeleteCollectionButton collection={collection} navigation={navigation} />

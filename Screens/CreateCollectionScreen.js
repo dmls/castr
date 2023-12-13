@@ -7,39 +7,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Logs } from 'expo';
 
 import { styles } from '../assets/styles/Styles';
+import { createCollection, updateCollection } from '../Storage/Storage';
 import Loader from '../Components/Loader';
 
 Logs.enableExpoCliLogging()
 
-const CreateCollectionScreen = ({ navigation }) => {
+const CreateCollectionScreen = ({ navigation, route }) => {
+  const { collection } = route?.params ?? {};
+
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(null);
-
-  const saveToStorage = async (values) => {
-    try {
-      const collectionsString = await AsyncStorage.getItem('collections');
-      const collectionsArray = collectionsString ? JSON.parse(collectionsString) : [];
-
-      const lastId = parseInt(collectionsArray[collectionsArray.length - 1]?.id);
-      const nextId = lastId ? lastId + 1 : 1;
-
-      const optionalAtts = [
-        { key: 'image', value: image },
-      ];
-     
-      collectionsArray.push({ 
-        id: nextId, 
-        created: Date.now(), 
-        name: values.name, 
-        ...optionalAtts.reduce((acc, { key, value }) => (value != null ? { ...acc, [key]: value } : acc), {}),
-      }); 
-
-      await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
-      navigation.push('Collections');
-    } catch (error) {
-      console.error('Error saving name to AsyncStorage:', error);
-    }
-  };
+  const [image, setImage] = useState(collection?.image || null);
 
   const validationSchema = yup.object().shape({
     name: yup.string()
@@ -49,13 +26,17 @@ const CreateCollectionScreen = ({ navigation }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: collection?.name || '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoading(true);
-      await saveToStorage(values);
+
+      const data = {name: values.name, image: image};
+      const result = collection ? await updateCollection(collection, data) : await createCollection(data);
+      
       setLoading(false);
+      navigation.push('CollectionView', {collection: result});
     },
   });
 
@@ -98,6 +79,12 @@ const CreateCollectionScreen = ({ navigation }) => {
               </View>
             )}
 
+            {image &&
+              <View style={styles.sectionRow}>
+                <Image source={{ uri: image }} style={styles.imageFullWidth} />
+              </View>
+            }
+
             <View style={styles.sectionRow}>
               <TouchableOpacity
                 style={styles.button}
@@ -108,19 +95,13 @@ const CreateCollectionScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            {image &&
-            <View style={styles.sectionRow}>
-              <Image source={{ uri: image }} style={styles.imageFullWidth} />
-            </View>
-            }
-
             <View style={styles.sectionRow}>
               <TouchableOpacity
                 style={styles.button}
                 activeOpacity={0.5}
                 onPress={handleSubmit}
               >
-                <Text style={styles.buttonText}>Create</Text>
+                <Text style={styles.buttonText}>{collection ? 'Update' : 'Create'}</Text>
               </TouchableOpacity>
             </View>
           </View>
