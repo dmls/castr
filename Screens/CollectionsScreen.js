@@ -43,7 +43,7 @@ const CollectionsScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.5}
-          onPress={() => navigation.push('CreateCollection')}
+          onPress={() => navigation.push('CreateUpdate', {action: 'create'})}
         >
           <Text style={styles.buttonText}>Create a collection</Text>
         </TouchableOpacity>

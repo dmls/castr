@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Image, ScrollView, KeyboardAvoidingView } from 'react-native';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -7,19 +7,39 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Logs } from 'expo';
 
 import { styles } from '../assets/styles/Styles';
-import { createCollection, updateCollection } from '../Storage/Storage';
-import navTitleCustom from '../Utils/Navigation';
+import { createCollection, updateCollection, createCharacter } from '../Storage/Storage';
+import { navTitleCustom, navGetPrevScreen } from '../Utils/Navigation';
 import Loader from '../Components/Loader';
 
 Logs.enableExpoCliLogging()
 
-const CreateCollectionScreen = ({ navigation, route }) => {
-  const { collection } = route?.params ?? {};
+const CreateUpdateScreen = ({ navigation, route }) => {
+  const { action, editRecord, collection } = route?.params ?? {};
 
-  navTitleCustom(navigation, (collection ? 'Edit collection' : 'Create collection'));
+  const prevScreen = navGetPrevScreen();
+
+  const actionConf = {
+    create: {
+      unit: 'collection',
+      title: 'Create collection',
+      onSubmit: useCallback(async (args) => await createCollection(args.data)),
+    },
+    edit: {
+      unit: 'collection',
+      title: 'Edit collection',
+      onSubmit: useCallback(async (args) => await updateCollection(args.editRecord, args.data)),
+    },
+    create_char: {
+      unit: 'character',
+      title: 'Create character',
+      onSubmit: useCallback(async (args) => await createCharacter(args.data, args.collection)),
+    },
+  }[action];
+  console.log(actionConf);
+  navTitleCustom(String(actionConf.title));
 
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(collection?.image || null);
+  const [image, setImage] = useState(editRecord?.image || null);
 
   const validationSchema = yup.object().shape({
     name: yup.string()
@@ -29,16 +49,23 @@ const CreateCollectionScreen = ({ navigation, route }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: collection?.name || '',
+      name: editRecord?.name || '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoading(true);
-
+    
       const data = {name: values.name, image: image};
-      const result = collection ? await updateCollection(collection, data) : await createCollection(data);
+      const args = {
+        create: {data: data},
+        edit: {editRecord: editRecord, data: data},
+        create_char: {collection: collection, data: data},
+      }[action];
       
+      const result = await actionConf.onSubmit(args);
+
       setLoading(false);
+      
       navigation.push('CollectionView', {collection: result});
     },
   });
@@ -66,7 +93,7 @@ const CreateCollectionScreen = ({ navigation, route }) => {
 
           <View style={styles.section}>
             <View style={[styles.sectionRow, styles.jcFlexStart]}>
-              <Text style={styles.inputLabel}>Collection name</Text>
+              <Text style={styles.inputLabel}>{actionConf.unit.charAt(0).toUpperCase() + actionConf.unit.slice(1)} name</Text>
             </View>
             <View style={styles.sectionRow}>
               <TextInput
@@ -104,7 +131,7 @@ const CreateCollectionScreen = ({ navigation, route }) => {
                 activeOpacity={0.5}
                 onPress={handleSubmit}
               >
-                <Text style={styles.buttonText}>{collection ? 'Update' : 'Create'}</Text>
+                <Text style={styles.buttonText}>Save</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -114,4 +141,4 @@ const CreateCollectionScreen = ({ navigation, route }) => {
   );
 }
 
-export default CreateCollectionScreen;
+export default CreateUpdateScreen;

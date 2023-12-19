@@ -10,6 +10,10 @@ const CollectionViewScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={styles.section}>
         <View style={styles.sectionRow}>
+          <Text>{JSON.stringify(collection)}</Text>
+        </View>
+
+        <View style={styles.sectionRow}>
           <Text style={styles.h1}>{collection.name}</Text>
         </View>
 
@@ -23,7 +27,17 @@ const CollectionViewScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.button}
             activeOpacity={0.5}
-            onPress={() => navigation.navigate('CreateCollection', {collection: collection})}
+            onPress={() => navigation.navigate('CreateUpdate', {action: 'create_char', collection: collection})}
+          >
+            <Text style={styles.buttonText}>Add character</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.sectionRow}>
+          <TouchableOpacity
+            style={styles.button}
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate('CreateUpdate', {action: 'edit', existingRecord: collection})}
           >
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>

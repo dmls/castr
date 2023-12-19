@@ -21,7 +21,7 @@ const getCollections = async () => {
  * Creates a new collection.
  * @param object data - Collection data.
  *
- * @returns mixed - Collection data on success, false on error.
+ * @return mixed - Collection data on success, false on error.
  */
 const createCollection = async (data) => {
   const { name, image } = data;
@@ -53,6 +53,43 @@ const createCollection = async (data) => {
     return collection;
   } catch (error) {
     console.error('Error saving name to AsyncStorage:', error);
+    return false;
+  }
+};
+
+/**
+ * Create a character and add it to a collection.
+ *
+ * @param object data - Data for new record.
+ * @param object collection - Collection to add character to.
+ *
+ * @return mixed
+ */
+const createCharacter = async (data, collection) => {
+  try {
+    !collection.characters ? [] : null;
+
+    // Add the character data to the 'characters' array
+    collection.characters.push({
+      ...data,
+      id: collection.characters.length + 1, 
+      created: Date.now(),
+    });
+
+    const collectionsString = await AsyncStorage.getItem('collections');
+    const collectionsArray = collectionsString ? JSON.parse(collectionsString) : [];
+
+    // Find the index of the current collection in the array
+    const indexToUpdate = collectionsArray.findIndex((c) => c.id === collection.id);
+
+    collectionsArray[indexToUpdate] = collection;
+
+    // Save the updated data back to AsyncStorage
+    await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
+
+    return collection;
+  } catch (error) {
+    console.error('Error creating character:', error);
     return false;
   }
 };
@@ -121,4 +158,4 @@ const deleteCollections = async (ids) => {
 };
 
 
-export { getCollections, createCollection, updateCollection, deleteCollections };
+export { getCollections, createCollection, updateCollection, deleteCollections, createCharacter };

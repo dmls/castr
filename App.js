@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CollectionsScreen from './Screens/CollectionsScreen';
 import CollectionViewScreen from './Screens/CollectionViewScreen';
 import SplashScreen from './Screens/SplashScreen';
-import CreateCollectionScreen from './Screens/CreateCollectionScreen';
+import CreateUpdateScreen from './Screens/CreateUpdateScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +24,7 @@ export default function App() {
         <Stack.Screen name="Collections" component={CollectionsScreen} />
         <Stack.Screen name="CollectionView" component={CollectionViewScreen} options={{ title: '' }}/>
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="CreateCollection" component={CreateCollectionScreen} />
+        <Stack.Screen name="CreateUpdate" component={CreateUpdateScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
