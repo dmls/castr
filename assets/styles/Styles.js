@@ -11,12 +11,15 @@ export var colors = {
   danger: '#dc3545',
   section: '#fff',
   sectionText: '#202529',
-  background: '#f8f9fa',
+  background: '#E5E4E2',
 };
 
 export const styles = StyleSheet.create({
   h1: {
     fontSize: 24
+  },
+  h2: {
+    fontSize: 20
   },
   container: {
     flex: 1,
