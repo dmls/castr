@@ -30,23 +30,25 @@ const CollectionViewScreen = ({ navigation, route }) => {
             return (
               <View key={index} style={styles.section}>
                 <View style={styles.sectionRow}>
-                  <View style={{flex: 2}}>
-                    <Text style={styles.h2}>{c.name}</Text>
+                  <View style={{flex: 2, flexDirection: 'column', justifyContent: 'space-between'}}>
+                    <View>
+                      <Text style={styles.h2}>{c.name}</Text>
+                    </View>
+
+                    <View>
+                      <TouchableOpacity onPress={async () => {
+                        const result = await deleteCharacter(collection, c);
+                        navigation.navigate('CollectionView', {collection: result});
+                      }}
+                      >
+                        <Text style={{color: colors.danger}}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
 
                   <View style={{flex: 1, height: 100}}>
                     <Image source={{uri: c.image}} style={[styles.imageFullWidth]} />
                   </View>
-                </View>
-
-                <View style={styles.sectionRow}>
-                  <TouchableOpacity onPress={async () => {
-                    const result = await deleteCharacter(collection, c);
-                    navigation.navigate('CollectionView', {collection: result});
-                  }}
-                  >
-                    <Text style={{color: colors.danger}}>Delete</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             );
