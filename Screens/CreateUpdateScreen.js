@@ -35,7 +35,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       onSubmit: useCallback(async (args) => await createCharacter(args.data, args.collection)),
     },
   }[action];
-  console.log(actionConf);
+  
   navTitleCustom(String(actionConf.title));
 
   const [loading, setLoading] = useState(false);
