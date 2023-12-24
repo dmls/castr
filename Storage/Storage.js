@@ -67,7 +67,7 @@ const createCollection = async (data) => {
  */
 const createCharacter = async (data, collection) => {
   try {
-    !collection.characters ? [] : null;
+    !collection.characters ? collection.characters = [] : null;
 
     // Add the character data to the 'characters' array
     collection.characters.push({
@@ -93,6 +93,54 @@ const createCharacter = async (data, collection) => {
     return false;
   }
 };
+
+/**
+  * Delete a character.
+  *
+  * @param object collection Collection to delete from.
+  * @param object character Character to delete.
+  *
+  * @return object|bool
+  * */
+const deleteCharacter = async (collection, character) => {
+  try {
+    // Check if the collection has a 'characters' array
+    if (!collection.characters) {
+      return false; // Collection doesn't have characters to delete
+    }
+
+    // Find the index of the character to be deleted in the 'characters' array
+    const indexToDelete = collection.characters.findIndex((char) => char.id === character.id);
+
+    if (indexToDelete === -1) {
+      return false; // Character not found in the 'characters' array
+    }
+
+    // Remove the character from the 'characters' array
+    collection.characters.splice(indexToDelete, 1);
+
+    // Update the collection in AsyncStorage
+    const collectionsString = await AsyncStorage.getItem('collections');
+    const collectionsArray = collectionsString ? JSON.parse(collectionsString) : [];
+
+    const indexToUpdate = collectionsArray.findIndex((c) => c.id === collection.id);
+
+    if (indexToUpdate !== -1) {
+      collectionsArray[indexToUpdate] = collection;
+
+      // Save the updated data back to AsyncStorage
+      await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
+
+      return collection; // Character successfully deleted
+    }
+
+    return false; // Collection not found in AsyncStorage
+  } catch (error) {
+    console.error('Error deleting character:', error);
+    return false;
+  }
+};
+
 
 /**
  * Updates a collection.
@@ -158,4 +206,4 @@ const deleteCollections = async (ids) => {
 };
 
 
-export { getCollections, createCollection, updateCollection, deleteCollections, createCharacter };
+export { getCollections, createCollection, updateCollection, deleteCollections, createCharacter, deleteCharacter };
