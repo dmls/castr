@@ -66,7 +66,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
 
       setLoading(false);
       
-      navigation.push('CollectionView', {collection: result});
+      navigation.navigate('CollectionView', {collection: collection || result});
     },
   });
 
