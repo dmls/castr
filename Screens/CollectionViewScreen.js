@@ -1,7 +1,8 @@
 import React from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
-import { styles } from '../assets/styles/Styles';
+import { styles, colors } from '../assets/styles/Styles';
 import DeleteCollectionButton from '../Components/DeleteCollectionButton';
+import { deleteCharacter } from '../Storage/Storage';
 
 const CollectionViewScreen = ({ navigation, route }) => {
   const {collection} = route.params;
@@ -24,11 +25,10 @@ const CollectionViewScreen = ({ navigation, route }) => {
         )}
       </View>
 
-      {collection.characters?.length && 
-        <View style={styles.section}>
-          {collection.characters.map((c, index) => {
+      {collection.characters?.length > 0 && 
+          collection.characters.map((c, index) => {
             return (
-              <React.Fragment key={c}>
+              <View key={index} style={styles.section}>
                 <View style={styles.sectionRow}>
                   <View style={{flex: 2}}>
                     <Text style={styles.h2}>{c.name}</Text>
@@ -38,10 +38,19 @@ const CollectionViewScreen = ({ navigation, route }) => {
                     <Image source={{uri: c.image}} style={[styles.imageFullWidth]} />
                   </View>
                 </View>
-              </React.Fragment>
+
+                <View style={styles.sectionRow}>
+                  <TouchableOpacity onPress={async () => {
+                    const result = await deleteCharacter(collection, c);
+                    navigation.navigate('CollectionView', {collection: result});
+                  }}
+                  >
+                    <Text style={{color: colors.danger}}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             );
-          })} 
-        </View>
+          }) 
       }
 
       <View style={styles.section}>
@@ -49,7 +58,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.button}
             activeOpacity={0.5}
-            onPress={() => navigation.navigate('CreateUpdate', {action: 'create_char', collection: collection})}
+            onPress={() => navigation.navigate('CreateUpdate', {action: 'create_char', collection: collection, existingRecord: {}})}
           >
             <Text style={styles.buttonText}>Add character</Text>
           </TouchableOpacity>
