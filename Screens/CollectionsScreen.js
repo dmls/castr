@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, Touchable } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../assets/styles/Styles';
 import { getCollections } from '../Storage/Storage';
+import CardThumbnail from '../Components/CardThumbnail';
 
 const CollectionsScreen = ({ navigation }) => {
   useLayoutEffect(() => {
@@ -31,12 +32,8 @@ const CollectionsScreen = ({ navigation }) => {
 
       {collections.map((c, index) => {
         return (
-          <TouchableOpacity key={index} style={styles.section} onPress={() => navigation.navigate('CollectionView', {collection: c})}>
-            <View style={styles.sectionRow}>
-              <Text style={styles.sectionText}>{c.name}</Text>
-            </View>
-          </TouchableOpacity>
-        )
+          <CardThumbnail key={index} onPress={() => navigation.navigate('CollectionView', {collection: c})} data={c} />
+        );
       })}
 
       <View style={styles.sectionRow}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles, colors } from '../assets/styles/Styles';
 import DeleteCollectionButton from '../Components/DeleteCollectionButton';
+import CardThumbnail from '../Components/CardThumbnail';
 import { deleteCharacter } from '../Storage/Storage';
 
 const CollectionViewScreen = ({ navigation, route }) => {
@@ -27,32 +28,22 @@ const CollectionViewScreen = ({ navigation, route }) => {
 
       {collection.characters?.length > 0 && 
           collection.characters.map((c, index) => {
-            return (
-              <View key={index} style={styles.section}>
-                <View style={styles.sectionRow}>
-                  <View style={{flex: 2, flexDirection: 'column', justifyContent: 'space-between'}}>
-                    <View>
-                      <Text style={styles.h2}>{c.name}</Text>
-                    </View>
-
-                    <View>
-                      <TouchableOpacity onPress={async () => {
-                        const result = await deleteCharacter(collection, c);
-                        navigation.navigate('CollectionView', {collection: result});
-                      }}
-                      >
-                        <Text style={{color: colors.danger}}>Delete</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-
-                  <View style={{flex: 1, height: 100}}>
-                    <Image source={{uri: c.image}} style={[styles.imageFullWidth]} />
-                  </View>
-                </View>
+            const actions = (
+              <View>
+                <TouchableOpacity onPress={async () => {
+                  const result = await deleteCharacter(collection, c);
+                  navigation.navigate('CollectionView', {collection: result});
+                }}
+                >
+                  <Text style={{color: colors.danger}}>Delete</Text>
+                </TouchableOpacity>
               </View>
             );
-          }) 
+
+            return (
+              <CardThumbnail key={index} data={c} actions={actions} />
+            );
+          })
       }
 
       <View style={styles.section}>
