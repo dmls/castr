@@ -70,7 +70,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.button}
             activeOpacity={0.5}
-            onPress={() => navigation.navigate('CreateUpdate', {action: 'edit', existingRecord: collection})}
+            onPress={() => navigation.navigate('CreateUpdate', {action: 'edit', editRecord: collection})}
           >
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
