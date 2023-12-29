@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Logs } from 'expo';
 
 import { styles } from '../assets/styles/Styles';
-import { createCollection, updateCollection, createCharacter } from '../Storage/Storage';
+import { createCollection, updateCollection, createCharacter, updateCharacter } from '../Storage/Storage';
 import { navTitleCustom, navGetPrevScreen } from '../Utils/Navigation';
 import Loader from '../Components/Loader';
 
@@ -33,6 +33,11 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       unit: 'character',
       title: 'Create character',
       onSubmit: useCallback(async (args) => await createCharacter(args.data, args.collection)),
+    },
+    update_char: {
+      unit: 'character',
+      title: 'Edit character',
+      onSubmit: useCallback(async (args) => await updateCharacter(args.editRecord, args.collection, args.data)),
     },
   }[action];
   
@@ -60,13 +65,14 @@ const CreateUpdateScreen = ({ navigation, route }) => {
         create: {data: data},
         edit: {editRecord: editRecord, data: data},
         create_char: {collection: collection, data: data},
+        update_char: {editRecord: editRecord, collection: collection, data: data},
       }[action];
       
       const result = await actionConf.onSubmit(args);
 
       setLoading(false);
       
-      navigation.navigate('CollectionView', {collection: collection || result});
+      navigation.navigate('CollectionView', {collection: result});
     },
   });
 

@@ -143,8 +143,8 @@ const deleteCharacter = async (collection, character) => {
 
 
 /**
- * Updates a collection.
- * @param int | 0bject collection - Collection ID or object to update.
+ * Update a collection.
+ * @param int | Object collection - Collection ID or object to update.
  * @param Object data - Data to be updated.
  *
  * @return mixed - Collection data on success, false on error.
@@ -171,6 +171,59 @@ const updateCollection = async (collection, data) => {
     await AsyncStorage.setItem('collections', JSON.stringify(resultArray));
 
     return updated;
+  } catch (error) {
+    console.error('Error updating collection:', error);
+    return false;
+  }
+};
+
+/**
+ * Update a character.
+ *
+ * @param int | Object character - Character ID or object to update.
+ * @param int | Object collection - Collection ID or object to update.
+ * @param Object data - Data to be updated.
+ *
+ * @return mixed - Character data on success, false on error.
+ */
+const updateCharacter = async (character, collection, data) => {
+  const isObjectOrNum = (...args) => args.every(arg => ['object', 'number'].includes(typeof arg));
+  
+  if (!isObjectOrNum(character, collection) || typeof data !== 'object') {
+    console.error('Error updating: wrong data type passed.');
+    return false;
+  }
+
+  const getId = (record) => typeof record === 'number' ? record : record.id;
+  const charId = getId(character);
+  const collId = getId(collection);
+
+  if (!charId || !collId) {
+    console.error('Error updating: Missing char or collection id.');
+    return false;
+  }
+
+  try {
+    const resultString = await AsyncStorage.getItem('collections');
+    let resultArray = JSON.parse(resultString || '[]');
+
+    const collectionIdx = resultArray.findIndex((result) => result.id === collId);
+
+    const charIdx = resultArray[collectionIdx].characters ? 
+      resultArray[collectionIdx].characters.findIndex((result) => result.id === charId) : 
+      null;
+
+    if (charIdx < 0) {
+      console.error('Error updating: Missing char index.');
+      return false;
+    }
+
+    const updated = {...resultArray[collectionIdx].characters[charIdx], ...data}
+    resultArray[collectionIdx].characters[charIdx] = updated;
+
+    await AsyncStorage.setItem('collections', JSON.stringify(resultArray));
+
+    return resultArray[collectionIdx];
   } catch (error) {
     console.error('Error updating collection:', error);
     return false;
@@ -206,4 +259,4 @@ const deleteCollections = async (ids) => {
 };
 
 
-export { getCollections, createCollection, updateCollection, deleteCollections, createCharacter, deleteCharacter };
+export { getCollections, createCollection, updateCollection, updateCharacter, deleteCollections, createCharacter, deleteCharacter };
