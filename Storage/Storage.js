@@ -18,6 +18,23 @@ const getCollections = async () => {
 };
 
 /**
+ * Retrieves a 'collection' record from AsyncStorage.
+ *
+ * @param int id Collection id.
+ * @return {Promise<object|boolean>} 
+ */
+const getCollection = async (id) => {
+  try {
+    const collections = await getCollections();
+    const collection = collections.find((item) => item.id === id);
+    return collection || false;
+  } catch (error) {
+    console.error('Error loading collection from AsyncStorage:', error);
+    return false;
+  }
+};
+
+/**
  * Creates a new collection.
  * @param object data - Collection data.
  *
@@ -259,4 +276,4 @@ const deleteCollections = async (ids) => {
 };
 
 
-export { getCollections, createCollection, updateCollection, updateCharacter, deleteCollections, createCharacter, deleteCharacter };
+export { getCollections, getCollection, createCollection, updateCollection, updateCharacter, deleteCollections, createCharacter, deleteCharacter };
