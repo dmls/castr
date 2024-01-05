@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Logs } from 'expo';
 
 import { styles } from '../assets/styles/Styles';
-import { createCollection, updateCollection, createCharacter, updateCharacter } from '../Storage/Storage';
+import { getCollection, createCollection, updateCollection, createCharacter, updateCharacter } from '../Storage/Storage';
 import { navTitleCustom, navGetPrevScreen } from '../Utils/Navigation';
 import Loader from '../Components/Loader';
 
@@ -71,8 +71,8 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       const result = await actionConf.onSubmit(args);
 
       setLoading(false);
-      
-      navigation.navigate('CollectionView', {collection: result});
+
+      navigation.navigate('CollectionView', {collection: collection ? await getCollection(collection.id) : result});
     },
   });
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../assets/styles/Styles';
 import { getCollections } from '../Storage/Storage';
@@ -13,14 +14,16 @@ const CollectionsScreen = ({ navigation }) => {
 
   const [collections, setCollections] = useState([]);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const data = await getCollections();
-      setCollections(data);
-    };
+  const loadData = async () => {
+    const data = await getCollections();
+    setCollections(data);
+  };
 
-    loadData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   return (
     <ScrollView style={styles.container}>
