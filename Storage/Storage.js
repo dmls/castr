@@ -1,20 +1,32 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /**
+ * Executes the callback within a try-catch block.
+ *
+ * @param callback
+ *
+ * @returns mixed
+ */
+const storageExec = async (callback) => {
+  try {
+    return callback();
+  } catch (error) {
+    console.error('Error performing storage operation: ', error);
+    return false;
+  }
+}
+
+/**
  * Retrieves the 'collections' record from AsyncStorage.
  *
  * @returns {Promise<Array|boolean>} - A promise that resolves to an array of collections if successful,
  *                                     or `false` if an error occurs.
  */
 const getCollections = async () => {
-  try {
+  return storageExec(async () => {
     const resultString = await AsyncStorage.getItem('collections');
     return resultString ? JSON.parse(resultString) : [];
-
-  } catch (error) {
-    console.error('Error loading collections from AsyncStorage:', error);
-    return false;
-  }
+  });
 };
 
 /**
@@ -24,28 +36,25 @@ const getCollections = async () => {
  * @return {Promise<object|boolean>} 
  */
 const getCollection = async (id) => {
-  try {
+  return storageExec(async () => {
     const collections = await getCollections();
     const collection = collections.find((item) => item.id === id);
     return collection || false;
-  } catch (error) {
-    console.error('Error loading collection from AsyncStorage:', error);
-    return false;
-  }
+  });
 };
 
 /**
  * Creates a new collection.
  * @param object data - Collection data.
  *
- * @return mixed - Collection data on success, false on error.
+ * @returns mixed - Collection data on success, false on error.
  */
 const createCollection = async (data) => {
   const { name, image } = data;
 
   if (!name) return false;
 
-  try {
+  return storageExec(async () => {
     const collectionsString = await AsyncStorage.getItem('collections');
     const collectionsArray = collectionsString ? JSON.parse(collectionsString) : [];
 
@@ -68,10 +77,7 @@ const createCollection = async (data) => {
     await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
     
     return collection;
-  } catch (error) {
-    console.error('Error saving name to AsyncStorage:', error);
-    return false;
-  }
+  });
 };
 
 /**
@@ -80,10 +86,10 @@ const createCollection = async (data) => {
  * @param object data - Data for new record.
  * @param object collection - Collection to add character to.
  *
- * @return mixed
+ * @returns mixed
  */
 const createCharacter = async (data, collection) => {
-  try {
+  return storageExec(async () => {
     !collection.characters ? collection.characters = [] : null;
 
     // Add the character data to the 'characters' array
@@ -105,10 +111,7 @@ const createCharacter = async (data, collection) => {
     await AsyncStorage.setItem('collections', JSON.stringify(collectionsArray));
 
     return collection;
-  } catch (error) {
-    console.error('Error creating character:', error);
-    return false;
-  }
+  });
 };
 
 /**
@@ -117,10 +120,10 @@ const createCharacter = async (data, collection) => {
   * @param object collection Collection to delete from.
   * @param object character Character to delete.
   *
-  * @return object|bool
+  * @returns object|bool
   * */
 const deleteCharacter = async (collection, character) => {
-  try {
+  return storageExec(async () => {
     // Check if the collection has a 'characters' array
     if (!collection.characters) {
       return false; // Collection doesn't have characters to delete
@@ -150,12 +153,7 @@ const deleteCharacter = async (collection, character) => {
 
       return collection; // Character successfully deleted
     }
-
-    return false; // Collection not found in AsyncStorage
-  } catch (error) {
-    console.error('Error deleting character:', error);
-    return false;
-  }
+  });
 };
 
 
@@ -164,19 +162,19 @@ const deleteCharacter = async (collection, character) => {
  * @param int | Object collection - Collection ID or object to update.
  * @param Object data - Data to be updated.
  *
- * @return mixed - Collection data on success, false on error.
+ * @returns mixed - Collection data on success, false on error.
  */
 const updateCollection = async (collection, data) => {
-  if (!['object', 'number'].includes(typeof collection) || typeof data !== 'object') {
-    return false;
-  }
+  return storageExec(async () => {
+    if (!['object', 'number'].includes(typeof collection) || typeof data !== 'object') {
+      return false;
+    }
 
-  const id = typeof collection === 'number' ? collection : collection.id;
-  if (!id) {
-    return false;
-  }
+    const id = typeof collection === 'number' ? collection : collection.id;
+    if (!id) {
+      return false;
+    }
 
-  try {
     const resultString = await AsyncStorage.getItem('collections');
     let resultArray = JSON.parse(resultString || '[]');
 
@@ -188,10 +186,7 @@ const updateCollection = async (collection, data) => {
     await AsyncStorage.setItem('collections', JSON.stringify(resultArray));
 
     return updated;
-  } catch (error) {
-    console.error('Error updating collection:', error);
-    return false;
-  }
+  });
 };
 
 /**
@@ -201,7 +196,7 @@ const updateCollection = async (collection, data) => {
  * @param int | Object collection - Collection ID or object to update.
  * @param Object data - Data to be updated.
  *
- * @return mixed - Character data on success, false on error.
+ * @returns mixed - Character data on success, false on error.
  */
 const updateCharacter = async (character, collection, data) => {
   const isObjectOrNum = (...args) => args.every(arg => ['object', 'number'].includes(typeof arg));
@@ -220,7 +215,7 @@ const updateCharacter = async (character, collection, data) => {
     return false;
   }
 
-  try {
+  return storageExec(async () => {
     const resultString = await AsyncStorage.getItem('collections');
     let resultArray = JSON.parse(resultString || '[]');
 
@@ -241,10 +236,7 @@ const updateCharacter = async (character, collection, data) => {
     await AsyncStorage.setItem('collections', JSON.stringify(resultArray));
 
     return resultArray[collectionIdx];
-  } catch (error) {
-    console.error('Error updating collection:', error);
-    return false;
-  }
+  });
 };
 
 /**
@@ -254,13 +246,13 @@ const updateCharacter = async (character, collection, data) => {
  * @returns boolean {boolean} - True on success, false on error.
  */
 const deleteCollections = async (ids) => {
-  try {
+  return storageExec(async () => {
     const resultString = await AsyncStorage.getItem('collections');
     let resultArray = JSON.parse(resultString || '[]');
 
     ids.forEach((id) => {
       const indexToDelete = resultArray.findIndex((item) => item.id === id);
-      
+
       if (indexToDelete !== -1) {
         resultArray.splice(indexToDelete, 1);
       }
@@ -269,11 +261,16 @@ const deleteCollections = async (ids) => {
     await AsyncStorage.setItem('collections', JSON.stringify(resultArray));
 
     return true;
-  } catch (error) {
-    console.error('Error deleting collection:', error);
-    return false;
-  }
+  });
 };
 
-
-export { getCollections, getCollection, createCollection, updateCollection, updateCharacter, deleteCollections, createCharacter, deleteCharacter };
+export { 
+  getCollections, 
+  getCollection,
+  createCollection, 
+  updateCollection, 
+  updateCharacter, 
+  deleteCollections, 
+  createCharacter, 
+  deleteCharacter 
+};
