@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { HeaderBackButton } from '@react-navigation/elements';
 
-const navTitleCustom = (title) => {
+export const navTitleCustom = (title) => {
   const navigation = useNavigation();
 
   React.useLayoutEffect(() => {
@@ -13,7 +13,7 @@ const navTitleCustom = (title) => {
 };
 
 
-const navGetPrevScreen = () => {
+export const navGetPrevScreen = () => {
   const navigation = useNavigation();
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2];
@@ -21,7 +21,7 @@ const navGetPrevScreen = () => {
   return prevRoute;
 };
 
-const navSetBackButton = (backScreen) => {
+export const navSetBackButton = (backScreen) => {
   const navigation = useNavigation();
 
   const handlePress = useCallback(
@@ -42,5 +42,3 @@ const navSetBackButton = (backScreen) => {
 
   return headerLeft;
 };
-
-export { navTitleCustom, navGetPrevScreen, navSetBackButton };
