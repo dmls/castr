@@ -4,9 +4,12 @@ import { styles, colors } from '../assets/styles/Styles';
 import DeleteCollectionButton from '../Components/DeleteCollectionButton';
 import CardThumbnail from '../Components/CardThumbnail';
 import { deleteCharacter } from '../Storage/Storage';
+import { navSetBackButton } from '../Utils/Navigation';
 
 const CollectionViewScreen = ({ navigation, route }) => {
   const {collection} = route.params;
+
+  navSetBackButton('Collections');
 
   return (
     <ScrollView style={styles.container}>
