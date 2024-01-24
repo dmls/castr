@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 const navTitleCustom = (title) => {
   const navigation = useNavigation();
@@ -20,5 +21,26 @@ const navGetPrevScreen = () => {
   return prevRoute;
 };
 
+const navSetBackButton = (backScreen) => {
+  const navigation = useNavigation();
 
-export { navTitleCustom, navGetPrevScreen };
+  const handlePress = useCallback(
+    () => navigation.navigate(backScreen),
+    [navigation, backScreen]
+  );
+
+  const headerLeft = useCallback(
+    () => <HeaderBackButton onPress={handlePress} />,
+    [handlePress],
+  );
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft,
+    });
+  }, [navigation, headerLeft]);
+
+  return headerLeft;
+};
+
+export { navTitleCustom, navGetPrevScreen, navSetBackButton };
