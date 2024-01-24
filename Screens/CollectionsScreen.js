@@ -27,12 +27,6 @@ const CollectionsScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <View style={styles.sectionRow}>
-          <Text>{JSON.stringify(collections)}</Text>
-        </View>
-      </View>
-
       {collections.map((c, index) => {
         return (
           <CardThumbnail key={index} onPress={() => navigation.navigate('CollectionView', {collection: c})} data={c} />

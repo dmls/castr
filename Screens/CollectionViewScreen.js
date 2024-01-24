@@ -5,6 +5,7 @@ import DeleteCollectionButton from '../Components/DeleteCollectionButton';
 import CardThumbnail from '../Components/CardThumbnail';
 import { deleteCharacter } from '../Storage/Storage';
 import { navSetBackButton } from '../Utils/Navigation';
+import { print } from '../Utils/Debug';
 
 const CollectionViewScreen = ({ navigation, route }) => {
   const {collection} = route.params;
@@ -14,9 +15,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
-        <View style={styles.sectionRow}>
-          <Text>{JSON.stringify(collection)}</Text>
-        </View>
+        {print(collection)}
 
         <View style={styles.sectionRow}>
           <Text style={styles.h1}>{collection.name}</Text>

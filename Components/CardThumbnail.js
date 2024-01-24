@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles } from '../assets/styles/Styles';
+import { print } from '../Utils/Debug';
 
 const CardThumbnail = ({ index, onPress, data, actions }) => {
   return (
@@ -18,6 +19,8 @@ const CardThumbnail = ({ index, onPress, data, actions }) => {
           <Image source={{uri: data.image}} style={[styles.imageFullWidth]} />
         </View>
       </View>
+      
+      {print(data)}
     </TouchableOpacity>  
   );
 }
