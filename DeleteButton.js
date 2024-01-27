@@ -3,15 +3,15 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { styles } from '../assets/styles/Styles';
 import { deleteCollections } from '../Storage/Storage';
 
-const DeleteCollectionButton = ({ collection, navigation }) => {
+export const DeleteButton = ({ record, navigation, textOnly }) => {
   const handlePress = () => {
     Alert.alert(
       'Confirm Deletion',
-      `Are you sure you want to delete ${collection.name}?`,
+      `Are you sure you want to delete ${record.name}?`,
       [
         { text: 'Cancel' },
         { text: 'Delete', onPress: async () => {
-          const del = await deleteCollections([collection.id]);
+          const del = await deleteCollections([record.id]);
           navigation.push('Collections');
         } },
       ]
@@ -20,7 +20,7 @@ const DeleteCollectionButton = ({ collection, navigation }) => {
 
   return (
     <TouchableOpacity
-      style={[styles.button, styles.buttonDanger]}
+      style={textOnly ? null : [styles.button, styles.buttonDanger]}
       activeOpacity={0.5}
       onPress={handlePress}
     >
@@ -28,5 +28,3 @@ const DeleteCollectionButton = ({ collection, navigation }) => {
     </TouchableOpacity>
   );
 }
-
-export default DeleteCollectionButton;

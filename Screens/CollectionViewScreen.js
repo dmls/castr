@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles, colors } from '../assets/styles/Styles';
-import DeleteCollectionButton from '../Components/DeleteCollectionButton';
+import DeleteButton from '../Components/DeleteButton';
 import CardThumbnail from '../Components/CardThumbnail';
 import { deleteCharacter } from '../Storage/Storage';
 import { navSetBackButton } from '../Utils/Navigation';
@@ -76,7 +76,11 @@ const CollectionViewScreen = ({ navigation, route }) => {
 
 
         <View style={styles.sectionRow}>
-          <DeleteCollectionButton collection={collection} navigation={navigation} />
+          <DeleteButton 
+            type="collections"
+            collection={collection} 
+            navigation={navigation} 
+          />
         </View>
       </View>
     </ScrollView>
