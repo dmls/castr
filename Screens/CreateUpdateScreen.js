@@ -4,20 +4,15 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Logs } from 'expo';
 
 import { styles } from '../assets/styles/Styles';
 import { getCollection, createCollection, updateCollection, createCharacter, updateCharacter } from '../Storage/Storage';
-import { navTitleCustom, navGetPrevScreen } from '../Utils/Navigation';
+import { navTitleCustom } from '../Utils/Navigation';
 import Loader from '../Components/Loader';
-
-Logs.enableExpoCliLogging()
 
 const CreateUpdateScreen = ({ navigation, route }) => {
   const { action, editRecord, collection } = route?.params ?? {};
-
-  const prevScreen = navGetPrevScreen();
-
+  
   const actionConf = {
     create: {
       unit: 'collection',
@@ -44,7 +39,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
   navTitleCustom(String(actionConf.title));
 
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(editRecord?.image || null);
+  const [image, setImage] = useState(null);
 
   const validationSchema = yup.object().shape({
     name: yup.string()
@@ -54,10 +49,10 @@ const CreateUpdateScreen = ({ navigation, route }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: editRecord?.name || '',
+      name: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       setLoading(true);
     
       const data = {name: values.name, image: image};
@@ -71,6 +66,10 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       const result = await actionConf.onSubmit(args);
 
       setLoading(false);
+      
+      resetForm();
+      formik.setValues({ name: '' });
+      setImage(null);
 
       navigation.navigate('CollectionView', {collection: collection ? await getCollection(collection.id) : result});
     },
@@ -103,7 +102,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
             </View>
             <View style={styles.sectionRow}>
               <TextInput
-                style={[styles.input, (errors.name && styles.inputError)]}
+                style={[styles.input, (errors.name && styles.inputError && formik.submitCount > 0)]}
                 onChangeText={handleChange('name')}
                 value={values.name}
               />
