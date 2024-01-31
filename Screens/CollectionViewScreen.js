@@ -1,9 +1,9 @@
 import React from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles, colors } from '../assets/styles/Styles';
-import DeleteCollectionButton from '../Components/DeleteCollectionButton';
+import DeleteButton from '../Components/DeleteButton';
+import { deleteCollections, deleteCharacters } from '../Storage/Storage';
 import CardThumbnail from '../Components/CardThumbnail';
-import { deleteCharacter } from '../Storage/Storage';
 import { navSetBackButton } from '../Utils/Navigation';
 import { print } from '../Utils/Debug';
 
@@ -32,13 +32,12 @@ const CollectionViewScreen = ({ navigation, route }) => {
           collection.characters.map((c, index) => {
             const actions = (
               <View>
-                <TouchableOpacity onPress={async () => {
-                  const result = await deleteCharacter(collection, c);
-                  navigation.navigate('CollectionView', {collection: result});
-                }}
-                >
-                  <Text style={{color: colors.danger}}>Delete</Text>
-                </TouchableOpacity>
+                <DeleteButton 
+                  callback={() => deleteCharacters(collection, c)}
+                  label={c.name}
+                  navigate={{screen: 'CollectionView', args: {collection: collection}}}
+                  textOnly={true}
+                />
               </View>
             );
 
@@ -76,7 +75,11 @@ const CollectionViewScreen = ({ navigation, route }) => {
 
 
         <View style={styles.sectionRow}>
-          <DeleteCollectionButton collection={collection} navigation={navigation} />
+          <DeleteButton 
+            callback={() => deleteCollections(collection.id)}
+            label={'this collection'}
+            navigate={{screen: 'Collections', args: {collection: collection}}}
+          />
         </View>
       </View>
     </ScrollView>
