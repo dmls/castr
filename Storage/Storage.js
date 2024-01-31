@@ -129,6 +129,10 @@ export const deleteCharacters = async (collection, characters) => {
       return false; // Collection doesn't have characters to delete
     }
 
+    if (!Array.isArray(characters)) {
+      characters = [characters];
+    }
+
     // Find the indices of the characters to be deleted in the 'characters' array
     const indicesToDelete = characters.map((char) =>
       collection.characters.findIndex((c) => c.id === char.id)
@@ -248,6 +252,10 @@ export const updateCharacter = async (character, collection, data) => {
  */
 export const deleteCollections = async (ids) => {
   return storageExec(async () => {
+    if (!Array.isArray(ids)) {
+      ids = [ids];
+    }
+
     const resultString = await AsyncStorage.getItem('collections');
     let resultArray = JSON.parse(resultString || '[]');
 
