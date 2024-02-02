@@ -29,7 +29,12 @@ const CollectionsScreen = ({ navigation }) => {
     <ScrollView style={styles.container}>
       {collections.map((c, index) => {
         return (
-          <CardThumbnail key={index} onPress={() => navigation.navigate('CollectionView', {collection: c})} data={c} />
+          <CardThumbnail 
+            key={index} 
+            onPress={() => navigation.navigate('CollectionView', {collection: c})} 
+            data={c} 
+            fullWidth={true}
+          />
         );
       })}
 
