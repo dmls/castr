@@ -3,6 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../assets/styles/Styles';
 import { getCollections } from '../Storage/Storage';
+import db from '../Storage/SQLite';
 import CardThumbnail from '../Components/CardThumbnail';
 
 const CollectionsScreen = ({ navigation }) => {
@@ -15,6 +16,8 @@ const CollectionsScreen = ({ navigation }) => {
   const [collections, setCollections] = useState([]);
 
   const loadData = async () => {
+    const sqldata = await db.getTable('collections');
+    console.log(sqldata);
     const data = await getCollections();
     setCollections(data);
   };
