@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import { openDatabase } from 'expo-sqlite';
 import { CollectionsSchema, MembersSchema } from './Schema';
 
 class SQLiteDB {
@@ -8,7 +8,7 @@ class SQLiteDB {
   }
 
   openDatabase() {
-    return SQLite.openDatabase('castr');
+    return openDatabase('castr');
   }
 
   createTables() {
@@ -21,52 +21,36 @@ class SQLiteDB {
         console.error('Error creating tables:', error);
       },
       () => {
-        console.log('Tables created successfully');
+        // console.log('Tables created successfully');
       }
     );
   }
 
-  async transactionWrap(callback) {
-    return new Promise((resolve, reject) => {
-      this.db.transaction(
-        (tx) => {
-          try {
-            callback(tx, resolve, reject);
-          } catch (error) {
-            reject(error);
-          }
-        },
-        (error) => {
-          reject(error);
-        },
-        () => {
-          resolve();
-        }
-      );
+  async execSQLAsync(query, args = []) {
+    const readOnly = true;
+    
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.db.transactionAsync(async tx => {
+          const result = await tx.executeSqlAsync(query, args);
+          resolve(result);
+        }, readOnly);
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
     });
   }
 
   async getTable(table) {
-    return new Promise((resolve, reject) => {
-      this.db.transaction((tx) => {
-        tx.executeSql(`SELECT * FROM ${table}`, [], (_, { rows }) => {
-          console.log('Rows:', rows);
-          resolve(rows.raw());
-        });
-      });
-    });
+    return this.execSQLAsync(`SELECT * FROM ${table}`);
   }
 
   async createCollection(data) {
     const { name, image } = data;
     
-    return new Promise((resolve, reject) => {
-      this.db.transaction(
-        (tx) => tx.executeSql(`INSERT INTO collections (name, image) VALUES (?, ?)`, [name, image], (_, result) => resolve(result.insertId), reject),
-        reject,
-        () => {}
-      );
-    });
+    const result = await this.execSQLAsync(`INSERT INTO collections (name, image) VALUES (?, ?)`, [name, image]);
+    return result.insertId;
   }
 }
 
