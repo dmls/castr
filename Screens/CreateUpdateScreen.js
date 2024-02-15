@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { styles } from '../assets/styles/Styles';
 import { getCollection, createCollection, updateCollection, createCharacter, updateCharacter } from '../Storage/Storage';
+import db from '../Storage/SQLite';
 import { navTitleCustom } from '../Utils/Navigation';
 import Loader from '../Components/Loader';
 
@@ -17,7 +18,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
     create: {
       unit: 'collection',
       title: 'Create collection',
-      onSubmit: useCallback(async (args) => await createCollection(args.data)),
+      onSubmit: useCallback(async (args) => console.log(await db.createCollection(args.data))),
     },
     edit: {
       unit: 'collection',

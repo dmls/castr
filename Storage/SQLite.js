@@ -27,14 +27,12 @@ class SQLiteDB {
   }
 
   async execSQLAsync(query, args = []) {
-    const readOnly = true;
-    
     return new Promise(async (resolve, reject) => {
       try {
         await this.db.transactionAsync(async tx => {
           const result = await tx.executeSqlAsync(query, args);
           resolve(result);
-        }, readOnly);
+        });
       } catch (error) {
         console.log(error);
         reject(error);
@@ -46,11 +44,18 @@ class SQLiteDB {
     return this.execSQLAsync(`SELECT * FROM ${table}`);
   }
 
+  async getCollection(id) {
+    const result = await this.execSQLAsync(`SELECT * FROM collections WHERE id = ?`, [id]);
+    
+    return result.rows;
+  }
+
   async createCollection(data) {
     const { name, image } = data;
     
     const result = await this.execSQLAsync(`INSERT INTO collections (name, image) VALUES (?, ?)`, [name, image]);
-    return result.insertId;
+    
+    return await this.getCollection(result.insertId);
   }
 }
 
