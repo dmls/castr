@@ -35,13 +35,14 @@ class SQLiteDB {
         });
       } catch (error) {
         console.log(error);
-        reject(error);
+        reject(false);
       }
     });
   }
 
   async getTable(table) {
-    return this.execSQLAsync(`SELECT * FROM ${table}`);
+    const result = await this.execSQLAsync(`SELECT * FROM ${table}`);
+    return result.rows;
   }
 
   async getCollection(id) {
@@ -56,6 +57,12 @@ class SQLiteDB {
     const result = await this.execSQLAsync(`INSERT INTO collections (name, image) VALUES (?, ?)`, [name, image]);
     
     return await this.getCollection(result.insertId);
+  }
+
+  async deleteCollection(id) {
+    const result = await this.execSQLAsync(`DELETE FROM collections WHERE id = ?`, [id]);
+
+    return true;
   }
 }
 

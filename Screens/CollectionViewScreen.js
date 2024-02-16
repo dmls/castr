@@ -2,7 +2,8 @@ import React from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles, colors } from '../assets/styles/Styles';
 import DeleteButton from '../Components/DeleteButton';
-import { deleteCollections, deleteCharacters } from '../Storage/Storage';
+import { deleteCharacters } from '../Storage/Storage';
+import db from '../Storage/SQLite';
 import CardThumbnail from '../Components/CardThumbnail';
 import { navSetBackButton } from '../Utils/Navigation';
 import { print } from '../Utils/Debug';
@@ -76,7 +77,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
 
         <View style={styles.sectionRow}>
           <DeleteButton 
-            callback={() => deleteCollections(collection.id)}
+            callback={() => db.deleteCollection(collection.id)}
             label={'this collection'}
             navigate={{screen: 'Collections', args: {collection: collection}}}
           />
