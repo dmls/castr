@@ -70,6 +70,12 @@ class SQLiteDB {
     return true;
   }
 
+  async delete(table, id) {
+    const result = await this.execSqlAsync(`DELETE FROM ${table} WHERE id = ?`, [id]);
+    
+    return result.rowsAffected === 1;
+  }
+
   async getMembers(collection_id) {
     const result = await this.execSqlAsync(`SELECT * FROM members where collection_id = ?`, [collection_id]);
 

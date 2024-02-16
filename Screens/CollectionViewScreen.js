@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles, colors } from '../assets/styles/Styles';
 import DeleteButton from '../Components/DeleteButton';
@@ -21,7 +20,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
     setMembers(data);
   };
 
-  useFocusEffect(
+  useEffect(
     React.useCallback(() => {
       loadData();
     }, [])
@@ -44,12 +43,12 @@ const CollectionViewScreen = ({ navigation, route }) => {
       </View>
 
       {members?.length > 0 && 
-          members.map((c, index) => {
+          members.map((m, index) => {
             const actions = (
               <View>
                 <DeleteButton 
-                  callback={() => deleteCharacters(collection, c)}
-                  label={c.name}
+                  callback={() => db.delete('members', m.id)}
+                  label={m.name}
                   navigate={{screen: 'CollectionView', args: {collection: collection}}}
                   textOnly={true}
                 />
@@ -59,8 +58,8 @@ const CollectionViewScreen = ({ navigation, route }) => {
             return (
               <CardThumbnail 
                 key={index} 
-                onPress={() => navigation.navigate('CreateUpdate', {action: 'update_char', collection: collection, editRecord: c})} 
-                data={c} 
+                onPress={() => navigation.navigate('CreateUpdate', {action: 'update_char', collection: collection, editRecord: m})} 
+                data={m} 
                 actions={actions} 
               />
             );
