@@ -10,6 +10,7 @@ export const CollectionsSchema = `
 export const MembersSchema = `
   CREATE TABLE IF NOT EXISTS members (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    collection_id INTEGER,
     name TEXT,
     created INTEGER,
     image TEXT

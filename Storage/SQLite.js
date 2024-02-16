@@ -26,7 +26,7 @@ class SQLiteDB {
     );
   }
 
-  async execSQLAsync(query, args = []) {
+  async execSqlAsync(query, args = []) {
     return new Promise(async (resolve, reject) => {
       try {
         await this.db.transactionAsync(async tx => {
@@ -41,28 +41,39 @@ class SQLiteDB {
   }
 
   async getTable(table) {
-    const result = await this.execSQLAsync(`SELECT * FROM ${table}`);
+    const result = await this.execSqlAsync(`SELECT * FROM ${table}`);
+    
     return result.rows;
   }
 
-  async getCollection(id) {
-    const result = await this.execSQLAsync(`SELECT * FROM collections WHERE id = ?`, [id]);
+  async getById(table, id) {
+    const result = await this.execSqlAsync(`SELECT * FROM collections WHERE id = ?`, [id]);
     
     return result.rows[0];
   }
 
-  async createCollection(data) {
-    const { name, image } = data;
-    
-    const result = await this.execSQLAsync(`INSERT INTO collections (name, image) VALUES (?, ?)`, [name, image]);
-    
-    return await this.getCollection(result.insertId);
+  async add(table, data) {
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+
+    const placeholders = Array.from({ length: keys.length }, (_, i) => `?`).join(', ');
+    const query = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders})`;
+
+    const result = await this.execSqlAsync(query, values);
+
+    return await this.getById(table, result.insertId);
   }
 
   async deleteCollection(id) {
-    const result = await this.execSQLAsync(`DELETE FROM collections WHERE id = ?`, [id]);
+    const result = await this.execSqlAsync(`DELETE FROM collections WHERE id = ?`, [id]);
 
     return true;
+  }
+
+  async getMembers(collection_id) {
+    const result = await this.execSqlAsync(`SELECT * FROM members where collection_id = ?`, [collection_id]);
+
+    return result.rows;
   }
 }
 
