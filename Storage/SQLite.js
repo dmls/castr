@@ -47,7 +47,7 @@ class SQLiteDB {
   async getCollection(id) {
     const result = await this.execSQLAsync(`SELECT * FROM collections WHERE id = ?`, [id]);
     
-    return result.rows;
+    return result.rows[0];
   }
 
   async createCollection(data) {

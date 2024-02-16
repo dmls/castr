@@ -18,7 +18,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
     create: {
       unit: 'collection',
       title: 'Create collection',
-      onSubmit: useCallback(async (args) => console.log(await db.createCollection(args.data))),
+      onSubmit: useCallback(async (args) => await db.createCollection(args.data)),
     },
     edit: {
       unit: 'collection',
