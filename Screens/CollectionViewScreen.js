@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles, colors } from '../assets/styles/Styles';
 import DeleteButton from '../Components/DeleteButton';
@@ -12,6 +13,19 @@ const CollectionViewScreen = ({ navigation, route }) => {
   const {collection} = route.params;
 
   navSetBackButton('Collections');
+
+  const [members, setMembers] = useState([]);
+
+  const loadData = async () => {
+    const data = await db.getMembers(collection.id);
+    setMembers(data);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   return (
     <ScrollView style={styles.container}>
@@ -29,8 +43,8 @@ const CollectionViewScreen = ({ navigation, route }) => {
         )}
       </View>
 
-      {collection.characters?.length > 0 && 
-          collection.characters.map((c, index) => {
+      {members?.length > 0 && 
+          members.map((c, index) => {
             const actions = (
               <View>
                 <DeleteButton 
