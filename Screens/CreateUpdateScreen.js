@@ -26,8 +26,8 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       onSubmit: useCallback(async (args) => await updateCollection(args.editRecord, args.data)),
     },
     add_member: {
-      unit: 'character',
-      title: 'Create character',
+      unit: 'member',
+      title: 'Create member',
       onSubmit: useCallback(async (args) => await db.add('members', {...args.data, ...{collection_id: args.collection.id}})),
     },
     update_member: {
