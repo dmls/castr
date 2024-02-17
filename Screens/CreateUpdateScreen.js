@@ -33,7 +33,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
     update_member: {
       unit: 'member',
       title: 'Edit member',
-      onSubmit: useCallback(async (args) => await updateCharacter(args.editRecord, args.collection, args.data)),
+      onSubmit: useCallback(async (args) => await db.update('members', args.editRecord.id, args.data)),
     },
   }[action];
   

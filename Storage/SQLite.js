@@ -64,9 +64,40 @@ class SQLiteDB {
     return await this.getById(table, result.insertId);
   }
 
-  async deleteCollection(id) {
-    const result = await this.execSqlAsync(`DELETE FROM collections WHERE id = ?`, [id]);
 
+  async addUpdate(table, data, action, updateId = null) {
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+
+    let query;
+    if (action === 'add') {
+      const placeholders = Array.from({ length: keys.length }, (_, i) => `?`).join(', ');
+      query = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders})`;
+    } else if (action === 'update') {
+      if (!updateId) {
+        throw new Error('updateId is required for update action.');
+      }
+      const setClauses = keys.map((key) => `${key} = ?`).join(', ');
+      query = `UPDATE ${table} SET ${setClauses} WHERE id = ${updateId}`;
+    } else {
+      throw new Error('Invalid action. Use "add" or "update".');
+    }
+
+    const result = await this.execSqlAsync(query, values);
+
+    return action === 'add' ? await this.getById(table, result.insertId) : await this.getById(table, updateId);
+  }
+
+  async update(table, id, data) {
+    const result = await this.addUpdate(table, data, 'update', id);
+    
+    return true;
+  }
+
+  async deleteCollection(id) {
+    await this.execSqlAsync(`DELETE FROM collections WHERE id = ?`, [id]);
+    await this.execSqlAsync(`DELETE FROM members WHERE collection_id = ?`, [id]);
+    
     return true;
   }
 
