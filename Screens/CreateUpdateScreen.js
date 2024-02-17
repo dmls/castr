@@ -20,7 +20,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       title: 'Create collection',
       onSubmit: useCallback(async (args) => await db.add('collections', args.data)),
     },
-    edit: {
+    update_collection: {
       unit: 'collection',
       title: 'Edit collection',
       onSubmit: useCallback(async (args) => await updateCollection(args.editRecord, args.data)),
@@ -59,7 +59,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       const data = {name: values.name, image: image};
       const args = {
         create: {data: data},
-        edit: {editRecord: editRecord, data: data},
+        update_collection: {editRecord: editRecord, data: data},
         add_member: {collection: collection, data: data},
         update_member: {editRecord: editRecord, collection: collection, data: data},
       }[action];
