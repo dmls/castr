@@ -52,19 +52,6 @@ class SQLiteDB {
     return result.rows[0];
   }
 
-  async add(table, data) {
-    const keys = Object.keys(data);
-    const values = Object.values(data);
-
-    const placeholders = Array.from({ length: keys.length }, (_, i) => `?`).join(', ');
-    const query = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders})`;
-
-    const result = await this.execSqlAsync(query, values);
-
-    return await this.getById(table, result.insertId);
-  }
-
-
   async addUpdate(table, data, action, updateId = null) {
     const keys = Object.keys(data);
     const values = Object.values(data);
@@ -85,13 +72,16 @@ class SQLiteDB {
 
     const result = await this.execSqlAsync(query, values);
 
-    return action === 'add' ? await this.getById(table, result.insertId) : await this.getById(table, updateId);
+    const getId = action === 'add' ? result.insertId : updateId;
+    return await this.getById(table, getId);
+  }
+
+  async add(table, data) {
+    return await this.addUpdate(table, data, 'add');
   }
 
   async update(table, id, data) {
-    const result = await this.addUpdate(table, data, 'update', id);
-    
-    return result;
+    return await this.addUpdate(table, data, 'update', id);
   }
 
   async deleteCollection(id) {
