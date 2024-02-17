@@ -72,7 +72,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       formik.setValues({ name: '' });
       setImage(null);
 
-      navigation.navigate('CollectionView', {collection: collection ? await getCollection(collection.id) : result});
+      navigation.navigate('CollectionView', {collection: collection ? await db.getById('collections', collection.id) : result});
     },
   });
 
