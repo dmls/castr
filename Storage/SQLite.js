@@ -91,7 +91,7 @@ class SQLiteDB {
   async update(table, id, data) {
     const result = await this.addUpdate(table, data, 'update', id);
     
-    return true;
+    return result;
   }
 
   async deleteCollection(id) {
