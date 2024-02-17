@@ -40,7 +40,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
   navTitleCustom(String(actionConf.title));
 
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(editRecord?.image || null);
 
   const validationSchema = yup.object().shape({
     name: yup.string()
@@ -50,7 +50,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: editRecord?.name || '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
