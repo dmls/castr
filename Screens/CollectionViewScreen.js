@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import { styles, colors } from '../assets/styles/Styles';
 import DeleteButton from '../Components/DeleteButton';
-import { deleteCharacters } from '../Storage/Storage';
 import db from '../Storage/SQLite';
 import CardThumbnail from '../Components/CardThumbnail';
 import { navSetBackButton } from '../Utils/Navigation';

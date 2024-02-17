@@ -6,7 +6,6 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { styles } from '../assets/styles/Styles';
-import { getCollection, createCollection, updateCollection, createCharacter, updateCharacter } from '../Storage/Storage';
 import db from '../Storage/SQLite';
 import { navTitleCustom } from '../Utils/Navigation';
 import Loader from '../Components/Loader';
