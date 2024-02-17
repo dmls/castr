@@ -58,7 +58,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
             return (
               <CardThumbnail 
                 key={index} 
-                onPress={() => navigation.navigate('CreateUpdate', {action: 'update_char', collection: collection, editRecord: m})} 
+                onPress={() => navigation.navigate('CreateUpdate', {action: 'update_member', collection: collection, editRecord: m})} 
                 data={m} 
                 actions={actions} 
               />

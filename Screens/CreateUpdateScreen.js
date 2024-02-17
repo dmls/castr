@@ -30,9 +30,9 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       title: 'Create character',
       onSubmit: useCallback(async (args) => await db.add('members', {...args.data, ...{collection_id: args.collection.id}})),
     },
-    update_char: {
-      unit: 'character',
-      title: 'Edit character',
+    update_member: {
+      unit: 'member',
+      title: 'Edit member',
       onSubmit: useCallback(async (args) => await updateCharacter(args.editRecord, args.collection, args.data)),
     },
   }[action];
@@ -61,7 +61,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
         create: {data: data},
         edit: {editRecord: editRecord, data: data},
         create_char: {collection: collection, data: data},
-        update_char: {editRecord: editRecord, collection: collection, data: data},
+        update_member: {editRecord: editRecord, collection: collection, data: data},
       }[action];
       
       const result = await actionConf.onSubmit(args);
