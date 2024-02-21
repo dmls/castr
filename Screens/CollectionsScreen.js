@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../assets/styles/Styles';

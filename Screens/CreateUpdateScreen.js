@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, TextInput, Image, ScrollView, KeyboardAvo
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { styles } from '../assets/styles/Styles';
 import db from '../Storage/SQLite';

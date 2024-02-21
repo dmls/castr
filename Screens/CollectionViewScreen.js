@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
-import { styles, colors } from '../assets/styles/Styles';
+import { styles } from '../assets/styles/Styles';
 import DeleteButton from '../Components/DeleteButton';
 import db from '../Storage/SQLite';
 import CardThumbnail from '../Components/CardThumbnail';
