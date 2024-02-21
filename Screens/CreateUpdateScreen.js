@@ -3,10 +3,9 @@ import { View, Text, TouchableOpacity, TextInput, Image, ScrollView, KeyboardAvo
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { styles } from '../assets/styles/Styles';
-import { getCollection, createCollection, updateCollection, createCharacter, updateCharacter } from '../Storage/Storage';
+import db from '../Storage/SQLite';
 import { navTitleCustom } from '../Utils/Navigation';
 import Loader from '../Components/Loader';
 
@@ -14,32 +13,32 @@ const CreateUpdateScreen = ({ navigation, route }) => {
   const { action, editRecord, collection } = route?.params ?? {};
   
   const actionConf = {
-    create: {
+    add_collection: {
       unit: 'collection',
       title: 'Create collection',
-      onSubmit: useCallback(async (args) => await createCollection(args.data)),
+      onSubmit: useCallback(async (args) => await db.add('collections', args.data)),
     },
-    edit: {
+    update_collection: {
       unit: 'collection',
       title: 'Edit collection',
-      onSubmit: useCallback(async (args) => await updateCollection(args.editRecord, args.data)),
+      onSubmit: useCallback(async (args) => await db.update('collections', args.editRecord.id, args.data)),
     },
-    create_char: {
-      unit: 'character',
-      title: 'Create character',
-      onSubmit: useCallback(async (args) => await createCharacter(args.data, args.collection)),
+    add_member: {
+      unit: 'member',
+      title: 'Create member',
+      onSubmit: useCallback(async (args) => await db.add('members', {...args.data, ...{collection_id: args.collection.id}})),
     },
-    update_char: {
-      unit: 'character',
-      title: 'Edit character',
-      onSubmit: useCallback(async (args) => await updateCharacter(args.editRecord, args.collection, args.data)),
+    update_member: {
+      unit: 'member',
+      title: 'Edit member',
+      onSubmit: useCallback(async (args) => await db.update('members', args.editRecord.id, args.data)),
     },
   }[action];
   
   navTitleCustom(String(actionConf.title));
 
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(editRecord?.image || null);
 
   const validationSchema = yup.object().shape({
     name: yup.string()
@@ -49,7 +48,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: editRecord?.name || '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -57,10 +56,10 @@ const CreateUpdateScreen = ({ navigation, route }) => {
     
       const data = {name: values.name, image: image};
       const args = {
-        create: {data: data},
-        edit: {editRecord: editRecord, data: data},
-        create_char: {collection: collection, data: data},
-        update_char: {editRecord: editRecord, collection: collection, data: data},
+        add_collection: {data: data},
+        update_collection: {editRecord: editRecord, data: data},
+        add_member: {collection: collection, data: data},
+        update_member: {editRecord: editRecord, collection: collection, data: data},
       }[action];
       
       const result = await actionConf.onSubmit(args);
@@ -71,7 +70,7 @@ const CreateUpdateScreen = ({ navigation, route }) => {
       formik.setValues({ name: '' });
       setImage(null);
 
-      navigation.navigate('CollectionView', {collection: collection ? await getCollection(collection.id) : result});
+      navigation.navigate('CollectionView', {collection: collection ? await db.getById('collections', collection.id) : result});
     },
   });
 

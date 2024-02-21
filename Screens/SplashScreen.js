@@ -5,7 +5,7 @@ import { styles } from '../assets/styles/Styles';
 const SplashScreen = ({ navigation }) => {
   setTimeout(() => {
     navigation.navigate('Collections');
-  }, 1500);
+  }, 0);
 
   return (
     <View style={[styles.section, styles.sectionSplash]}>

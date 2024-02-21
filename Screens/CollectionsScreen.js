@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../assets/styles/Styles';
-import { getCollections } from '../Storage/Storage';
+import db from '../Storage/SQLite';
 import CardThumbnail from '../Components/CardThumbnail';
 
 const CollectionsScreen = ({ navigation }) => {
@@ -15,7 +15,7 @@ const CollectionsScreen = ({ navigation }) => {
   const [collections, setCollections] = useState([]);
 
   const loadData = async () => {
-    const data = await getCollections();
+    const data = await db.getTable('collections');
     setCollections(data);
   };
 
@@ -42,7 +42,7 @@ const CollectionsScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.5}
-          onPress={() => navigation.push('CreateUpdate', {action: 'create'})}
+          onPress={() => navigation.push('CreateUpdate', {action: 'add_collection'})}
         >
           <Text style={styles.buttonText}>Create a collection</Text>
         </TouchableOpacity>

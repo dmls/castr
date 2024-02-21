@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
-import { styles, colors } from '../assets/styles/Styles';
+import { styles } from '../assets/styles/Styles';
 import DeleteButton from '../Components/DeleteButton';
-import { deleteCollections, deleteCharacters } from '../Storage/Storage';
+import db from '../Storage/SQLite';
 import CardThumbnail from '../Components/CardThumbnail';
 import { navSetBackButton } from '../Utils/Navigation';
 import { print } from '../Utils/Debug';
@@ -11,6 +11,19 @@ const CollectionViewScreen = ({ navigation, route }) => {
   const {collection} = route.params;
 
   navSetBackButton('Collections');
+
+  const [members, setMembers] = useState([]);
+
+  const loadData = async () => {
+    const data = await db.getMembers(collection.id);
+    setMembers(data);
+  };
+
+  useEffect(
+    React.useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   return (
     <ScrollView style={styles.container}>
@@ -28,13 +41,13 @@ const CollectionViewScreen = ({ navigation, route }) => {
         )}
       </View>
 
-      {collection.characters?.length > 0 && 
-          collection.characters.map((c, index) => {
+      {members?.length > 0 && 
+          members.map((m, index) => {
             const actions = (
               <View>
                 <DeleteButton 
-                  callback={() => deleteCharacters(collection, c)}
-                  label={c.name}
+                  callback={() => db.delete('members', m.id)}
+                  label={m.name}
                   navigate={{screen: 'CollectionView', args: {collection: collection}}}
                   textOnly={true}
                 />
@@ -44,8 +57,8 @@ const CollectionViewScreen = ({ navigation, route }) => {
             return (
               <CardThumbnail 
                 key={index} 
-                onPress={() => navigation.navigate('CreateUpdate', {action: 'update_char', collection: collection, editRecord: c})} 
-                data={c} 
+                onPress={() => navigation.navigate('CreateUpdate', {action: 'update_member', collection: collection, editRecord: m})} 
+                data={m} 
                 actions={actions} 
               />
             );
@@ -57,9 +70,9 @@ const CollectionViewScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.button}
             activeOpacity={0.5}
-            onPress={() => navigation.navigate('CreateUpdate', {action: 'create_char', collection: collection, editRecord: {}})}
+            onPress={() => navigation.navigate('CreateUpdate', {action: 'add_member', collection: collection, editRecord: {}})}
           >
-            <Text style={styles.buttonText}>Add character</Text>
+            <Text style={styles.buttonText}>Add member</Text>
           </TouchableOpacity>
         </View>
 
@@ -67,7 +80,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.button}
             activeOpacity={0.5}
-            onPress={() => navigation.navigate('CreateUpdate', {action: 'edit', editRecord: collection})}
+            onPress={() => navigation.navigate('CreateUpdate', {action: 'update_collection', editRecord: collection})}
           >
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
@@ -76,7 +89,7 @@ const CollectionViewScreen = ({ navigation, route }) => {
 
         <View style={styles.sectionRow}>
           <DeleteButton 
-            callback={() => deleteCollections(collection.id)}
+            callback={() => db.deleteCollection(collection.id)}
             label={'this collection'}
             navigate={{screen: 'Collections', args: {collection: collection}}}
           />
