@@ -13,11 +13,11 @@ const CardThumbnail = ({ index, onPress, data, actions, fullWidth = false }) => 
     </View>
   );
 
-  const CardImage = (
+  const CardImage = data.image ? (
     <View style={{ flex: 1, ...(fullWidth ? {} : { height: 100 }) }}>
       <Image source={{uri: data.image}} style={[styles.imageFullWidth]} />
     </View>
-  );
+  ) : (<></>);
   
   return (
     <TouchableOpacity key={index} onPress={onPress} style={styles.section}>
