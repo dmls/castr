@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`print function renders correctly with default settings 1`] = `
+<View
+  style={
+    {
+      "alignContent": "center",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "marginHorizontal": 4,
+      "marginVertical": 10,
+      "paddingHorizontal": 10,
+    }
+  }
+>
+  <Text>
+    {
+  "key": "value"
+}
+  </Text>
+</View>
+`;
+
+exports[`print function renders correctly with pretty formatting 1`] = `
+<View
+  style={
+    {
+      "alignContent": "center",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "marginHorizontal": 4,
+      "marginVertical": 10,
+      "paddingHorizontal": 10,
+    }
+  }
+>
+  <Text>
+    {
+  "key": "value"
+}
+  </Text>
+</View>
+`;
+
+exports[`print function renders correctly without pretty formatting 1`] = `
+<View
+  style={
+    {
+      "alignContent": "center",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "marginHorizontal": 4,
+      "marginVertical": 10,
+      "paddingHorizontal": 10,
+    }
+  }
+>
+  <Text>
+    {"key":"value"}
+  </Text>
+</View>
+`;
