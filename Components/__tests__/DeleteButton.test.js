@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { sleep } from '../../Test/Navigation';
 import DeleteButton from '../DeleteButton';
 
-const callback = () => { /* callback code */ };
+const callback = jest.fn();
 const label = 'LABEL';
 const navigate = 'NAV_TO';
 

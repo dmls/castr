@@ -5,7 +5,7 @@ import renderer from 'react-test-renderer';
 import CardThumbnail from '../CardThumbnail';
 
 const index = 0;
-const onPress = () => { /* onPress callback code */ };
+const onPress = jest.fn();
 const data = {
   name: 'data name',
   image: 'file://image-path-here.jpg',
