@@ -11,27 +11,27 @@ const navigate = 'NAV_TO';
 describe('DeleteButton', () => {
   test('renders correctly with default settings', async () => {
     const component = renderer.create(
-        <DeleteButton
-          callback={callback}
-          label={label}
-          navigate={navigate}
-        />
+      <DeleteButton
+        callback={callback}
+        label={label}
+        navigate={navigate}
+      />
     );
 
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
-    
+
     await sleep();
   });
 
   test('renders correctly with textOnly = false', async () => {
     const component = renderer.create(
-        <DeleteButton
-          callback={callback}
-          label={label}
-          navigate={navigate}
-          textOnly={false}
-        />
+      <DeleteButton
+        callback={callback}
+        label={label}
+        navigate={navigate}
+        textOnly={false}
+      />
     );
 
     const tree = component.toJSON();
@@ -42,17 +42,17 @@ describe('DeleteButton', () => {
 
   test('renders correctly with textOnly = true', async () => {
     const component = renderer.create(
-        <DeleteButton
-          callback={callback}
-          label={label}
-          navigate={navigate}
-          textOnly={true}
-        />
+      <DeleteButton
+        callback={callback}
+        label={label}
+        navigate={navigate}
+        textOnly={true}
+      />
     );
-    
+
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
-    
+
     await sleep();
   });
 });
