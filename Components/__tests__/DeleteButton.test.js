@@ -3,62 +3,70 @@ import renderer from 'react-test-renderer';
 import { NavigationContainer } from '@react-navigation/native'; // Import NavigationContainer
 import DeleteButton from '../DeleteButton';
 
-const callback= () => { /* callback code */ };
+const callback = () => { /* callback code */ };
 const label = 'LABEL';
 const navigate = 'NAV_TO';
 
-const mockedUsedNavigate = jest.fn();
+const sleepTime = 1;
+const mockedNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockedUsedNavigate,
-}));
+jest.mock('@react-navigation/native', () => {
+  const actualNav = jest.requireActual('@react-navigation/native');
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockedNavigate,
+    }),
+  };
+});
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(() => resolve(true), ms));
 
 describe('DeleteButton', () => {
-  test('renders correctly with default settings', () => {
+  test('renders correctly with default settings', async () => {
     const component = renderer.create(
-      <NavigationContainer>
         <DeleteButton
           callback={callback}
           label={label}
           navigate={navigate}
         />
-      </NavigationContainer>
     );
 
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
+    
+    await sleep(sleepTime);
   });
 
-  test('renders correctly with textOnly = false', () => {
+  test('renders correctly with textOnly = false', async () => {
     const component = renderer.create(
-      <NavigationContainer>
         <DeleteButton
           callback={callback}
           label={label}
           navigate={navigate}
           textOnly={false}
         />
-      </NavigationContainer>
     );
 
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
+
+    await sleep(sleepTime);
   });
 
-  test('renders correctly with textOnly = true', () => {
+  test('renders correctly with textOnly = true', async () => {
     const component = renderer.create(
-      <NavigationContainer>
         <DeleteButton
           callback={callback}
           label={label}
           navigate={navigate}
           textOnly={true}
         />
-      </NavigationContainer>
     );
     
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
+    
+    await sleep(sleepTime);
   });
 });
