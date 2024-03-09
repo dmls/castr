@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { NavigationContainer } from '@react-navigation/native'; // Import NavigationContainer
+import { NavigationContainer } from '@react-navigation/native';
 import { sleep } from '../../Test/Navigation';
 import DeleteButton from '../DeleteButton';
 
