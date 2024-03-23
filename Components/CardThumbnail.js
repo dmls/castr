@@ -38,8 +38,6 @@ const CardThumbnail = ({ index, onPress, data, actions, fullWidth = false }) => 
           {CardImage}
         </View>
       )}
-      
-      {/* {print(data)} */}
     </TouchableOpacity>  
   );
 }

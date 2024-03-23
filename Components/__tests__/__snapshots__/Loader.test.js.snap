@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loader renders correctly with default settings 1`] = `
+<Modal
+  animationType="none"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={true}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": undefined,
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "justifyContent": "space-around",
+          "width": 100,
+        }
+      }
+    >
+      <ActivityIndicator
+        animating={true}
+        color="#0d6efd"
+        size="large"
+        style={
+          {
+            "alignItems": "center",
+            "height": 80,
+          }
+        }
+      />
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`Loader renders correctly with loading = false 1`] = `
+<Modal
+  animationType="none"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={false}
+/>
+`;
+
+exports[`Loader renders correctly with loading = true 1`] = `
+<Modal
+  animationType="none"
+  hardwareAccelerated={false}
+  transparent={true}
+  visible={true}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": undefined,
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "justifyContent": "space-around",
+          "width": 100,
+        }
+      }
+    >
+      <ActivityIndicator
+        animating={true}
+        color="#0d6efd"
+        size="large"
+        style={
+          {
+            "alignItems": "center",
+            "height": 80,
+          }
+        }
+      />
+    </View>
+  </View>
+</Modal>
+`;
